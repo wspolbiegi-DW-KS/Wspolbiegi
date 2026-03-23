@@ -1,15 +1,13 @@
 namespace ReferenceApplicationArchitecture.BusinessLogic;
 
-using ReferenceApplicationArchitecture.PresentationModel;
+using ReferenceApplicationArchitecture.Data;
 
 /// <summary>
-/// Business operations for managing tasks, independent from storage and UI.
+/// Concurrent simulation operations for balls on a rectangular table.
 /// </summary>
-public interface ITaskService
+public interface IBilliardService
 {
-    TaskItem AddTask(string title);
-    TaskItem CompleteTask(Guid id);
-    IReadOnlyCollection<TaskItem> GetAll();
-    IReadOnlyCollection<TaskItem> GetOpen();
-    bool Remove(Guid id);
+    void Initialize(int ballCount, double tableWidth, double tableHeight);
+    void Step(double deltaTimeSeconds);
+    IReadOnlyList<BallEntity> GetBalls();
 }

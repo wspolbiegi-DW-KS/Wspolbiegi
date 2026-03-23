@@ -1,15 +1,10 @@
 namespace ReferenceApplicationArchitecture.Data;
 
-using ReferenceApplicationArchitecture.PresentationModel;
-
 /// <summary>
-/// Abstraction over task storage to enable swapping implementations and ease testing.
+/// Thread-safe persistence boundary for simulation balls.
 /// </summary>
-public interface ITaskRepository
+public interface IBallRepository
 {
-    TaskItem Add(TaskItem task);
-    TaskItem? GetById(Guid id);
-    IReadOnlyCollection<TaskItem> GetAll();
-    TaskItem Update(TaskItem task);
-    bool Remove(Guid id);
+    void ReplaceAll(IReadOnlyList<BallEntity> balls);
+    IReadOnlyList<BallEntity> GetAll();
 }

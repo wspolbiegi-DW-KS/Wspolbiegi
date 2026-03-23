@@ -1,38 +1,80 @@
 namespace ReferenceApplicationArchitecture.PresentationView;
 
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Windows;
-using ReferenceApplicationArchitecture.PresentationModel;
 using ReferenceApplicationArchitecture.PresentationViewModel;
 
 public partial class MainWindow : Window
 {
-    private readonly TaskListViewModel _viewModel;
+    private readonly BilliardTableViewModel _viewModel;
+    private readonly DispatcherTimer _timer;
 
-    public MainWindow(TaskListViewModel viewModel)
+    public MainWindow(BilliardTableViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
         DataContext = _viewModel;
-    }
 
-    private void OnAddTask(object sender, RoutedEventArgs e)
-    {
-        if (_viewModel.TryAddTask(TaskTitleBox.Text))
+        _timer = new DispatcherTimer
         {
-            TaskTitleBox.Clear();
-        }
-    }
-
-    private void OnCompleteTask(object sender, RoutedEventArgs e)
-    {
-        if (TaskList.SelectedItem is TaskItem task)
+            Interval = TimeSpan.FromMilliseconds(16)
+        };
+        _timer.Tick += (_, _) =>
         {
-            _viewModel.TryCompleteTask(task.Id);
-        }
+            _viewModel.Step(0.016);
+            RedrawBalls();
+        };
+
+        Loaded += (_, _) => RedrawBalls();
     }
 
-    private void OnRefresh(object sender, RoutedEventArgs e)
+    private void OnStartSimulation(object sender, RoutedEventArgs e)
     {
-        _viewModel.Refresh();
+        if (!int.TryParse(BallCountBox.Text, out var ballCount))
+        {
+            ErrorText.Text = "Podaj poprawna liczbe kul.";
+            return;
+        }
+
+        var width = Math.Max(120, TableCanvas.ActualWidth);
+        var height = Math.Max(120, TableCanvas.ActualHeight);
+
+        if (_viewModel.TryInitialize(ballCount, width, height))
+        {
+            _timer.Start();
+            RedrawBalls();
+            ErrorText.Text = string.Empty;
+            return;
+        }
+
+        ErrorText.Text = _viewModel.LastError;
+    }
+
+    private void OnStopSimulation(object sender, RoutedEventArgs e)
+    {
+        _timer.Stop();
+    }
+
+    private void RedrawBalls()
+    {
+        TableCanvas.Children.Clear();
+        foreach (var ball in _viewModel.Balls)
+        {
+            var ellipse = new Ellipse
+            {
+                Width = 2 * ball.Radius,
+                Height = 2 * ball.Radius,
+                Fill = Brushes.OrangeRed,
+                Stroke = Brushes.Black,
+                StrokeThickness = 1
+            };
+
+            Canvas.SetLeft(ellipse, ball.X - ball.Radius);
+            Canvas.SetTop(ellipse, ball.Y - ball.Radius);
+            TableCanvas.Children.Add(ellipse);
+        }
     }
 }

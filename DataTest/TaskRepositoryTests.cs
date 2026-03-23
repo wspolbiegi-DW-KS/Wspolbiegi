@@ -3,47 +3,36 @@ namespace ReferenceApplicationArchitecture.DataTest;
 using FluentAssertions;
 using Xunit;
 using ReferenceApplicationArchitecture.Data;
-using ReferenceApplicationArchitecture.PresentationModel;
 
-public class TaskRepositoryTests
+public class BallRepositoryTests
 {
     [Fact]
-    public void Add_and_get_all_should_store_items_in_created_order()
+    public void ReplaceAll_and_GetAll_should_store_given_balls()
     {
-        var repo = new InMemoryTaskRepository();
-        var t1 = new TaskItem(Guid.NewGuid(), "first", new DateTime(2024, 1, 1, 10, 0, 0, DateTimeKind.Utc));
-        var t2 = new TaskItem(Guid.NewGuid(), "second", new DateTime(2024, 1, 1, 11, 0, 0, DateTimeKind.Utc));
+        var repo = new InMemoryBallRepository();
+        var balls = new[]
+        {
+            new BallEntity(Guid.NewGuid(), 20, 20, 10, 0, 8),
+            new BallEntity(Guid.NewGuid(), 50, 40, -10, 4, 8)
+        };
 
-        repo.Add(t2);
-        repo.Add(t1);
+        repo.ReplaceAll(balls);
+        var loaded = repo.GetAll();
 
-        repo.GetAll()
-            .Select(t => t.Title)
-            .Should().Equal("first", "second");
+        loaded.Should().HaveCount(2);
+        loaded.Select(b => b.Id).Should().Equal(balls[0].Id, balls[1].Id);
     }
 
     [Fact]
-    public void Update_should_replace_existing_instance()
+    public void GetAll_should_return_deep_copy()
     {
-        var repo = new InMemoryTaskRepository();
+        var repo = new InMemoryBallRepository();
         var id = Guid.NewGuid();
-        var original = new TaskItem(id, "title", DateTime.UtcNow);
-        repo.Add(original);
+        repo.ReplaceAll(new[] { new BallEntity(id, 30, 40, 1, 2, 8) });
 
-        var updated = new TaskItem(id, "title", original.CreatedAt, isCompleted: true, completedAt: DateTime.UtcNow);
-        repo.Update(updated);
+        var snapshot1 = repo.GetAll();
+        var snapshot2 = repo.GetAll();
 
-        repo.GetById(id)!.IsCompleted.Should().BeTrue();
-    }
-
-    [Fact]
-    public void Remove_should_delete_when_present()
-    {
-        var repo = new InMemoryTaskRepository();
-        var id = Guid.NewGuid();
-        repo.Add(new TaskItem(id, "to-remove", DateTime.UtcNow));
-
-        repo.Remove(id).Should().BeTrue();
-        repo.GetById(id).Should().BeNull();
+        ReferenceEquals(snapshot1[0], snapshot2[0]).Should().BeFalse();
     }
 }

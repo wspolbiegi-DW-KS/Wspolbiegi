@@ -1,14 +1,11 @@
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\bin\Release\netstandard2.0\Data.deps.json
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\bin\Release\netstandard2.0\Data.dll
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\bin\Release\netstandard2.0\Data.pdb
-C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\bin\Release\netstandard2.0\PresentationModel.dll
-C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\bin\Release\netstandard2.0\PresentationModel.pdb
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.csproj.AssemblyReference.cache
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.AssemblyInfoInputs.cache
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.AssemblyInfo.cs
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.csproj.CoreCompileInputs.cache
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.sourcelink.json
-C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.csproj.Up2Date
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.dll
 C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\obj\Release\netstandard2.0\Data.pdb

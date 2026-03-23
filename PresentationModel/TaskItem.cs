@@ -1,33 +1,23 @@
 namespace ReferenceApplicationArchitecture.PresentationModel;
 
 /// <summary>
-/// Domain model representing a single unit of work displayed in the UI.
+/// Presentation-layer model used by the WPF view to render a ball.
 /// </summary>
-public class TaskItem
+public sealed class BallViewData
 {
-    public TaskItem(Guid id, string title, DateTime createdAt, bool isCompleted = false, DateTime? completedAt = null)
+    public BallViewData(Guid id, double x, double y, double radius)
     {
         Id = id;
-        Title = title;
-        CreatedAt = createdAt;
-        IsCompleted = isCompleted;
-        CompletedAt = completedAt;
+        X = x;
+        Y = y;
+        Radius = radius;
     }
 
     public Guid Id { get; }
 
-    public string Title { get; }
+    public double X { get; }
 
-    public DateTime CreatedAt { get; }
+    public double Y { get; }
 
-    public bool IsCompleted { get; private set; }
-
-    public DateTime? CompletedAt { get; private set; }
-
-    public TaskItem MarkCompleted(DateTime completedAt)
-    {
-        IsCompleted = true;
-        CompletedAt = completedAt;
-        return this;
-    }
+    public double Radius { get; }
 }

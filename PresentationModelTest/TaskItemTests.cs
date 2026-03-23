@@ -4,17 +4,17 @@ using FluentAssertions;
 using Xunit;
 using ReferenceApplicationArchitecture.PresentationModel;
 
-public class TaskItemTests
+public class BallViewDataTests
 {
     [Fact]
-    public void MarkCompleted_should_set_flags_and_timestamp()
+    public void Constructor_should_assign_all_properties()
     {
-        var now = new DateTime(2024, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-        var item = new TaskItem(Guid.NewGuid(), "demo", now);
+        var id = Guid.NewGuid();
+        var viewData = new BallViewData(id, 12.5, 30.2, 10);
 
-        item.MarkCompleted(now);
-
-        item.IsCompleted.Should().BeTrue();
-        item.CompletedAt.Should().Be(now);
+        viewData.Id.Should().Be(id);
+        viewData.X.Should().Be(12.5);
+        viewData.Y.Should().Be(30.2);
+        viewData.Radius.Should().Be(10);
     }
 }

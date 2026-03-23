@@ -29,24 +29,11 @@
       "Data/1.0.0": {
         "type": "project",
         "framework": ".NETStandard,Version=v2.0",
-        "dependencies": {
-          "PresentationModel": "1.0.0"
-        },
         "compile": {
           "bin/placeholder/Data.dll": {}
         },
         "runtime": {
           "bin/placeholder/Data.dll": {}
-        }
-      },
-      "PresentationModel/1.0.0": {
-        "type": "project",
-        "framework": ".NETStandard,Version=v2.0",
-        "compile": {
-          "bin/placeholder/PresentationModel.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PresentationModel.dll": {}
         }
       }
     }
@@ -200,11 +187,6 @@
       "type": "project",
       "path": "../Data/Data.csproj",
       "msbuildProject": "../Data/Data.csproj"
-    },
-    "PresentationModel/1.0.0": {
-      "type": "project",
-      "path": "../PresentationModel/PresentationModel.csproj",
-      "msbuildProject": "../PresentationModel/PresentationModel.csproj"
     }
   },
   "projectFileDependencyGroups": {

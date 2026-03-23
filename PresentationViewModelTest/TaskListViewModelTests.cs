@@ -3,65 +3,43 @@ namespace ReferenceApplicationArchitecture.PresentationViewModelTest;
 using FluentAssertions;
 using Xunit;
 using ReferenceApplicationArchitecture.BusinessLogic;
-using ReferenceApplicationArchitecture.PresentationModel;
+using ReferenceApplicationArchitecture.Data;
 using ReferenceApplicationArchitecture.PresentationViewModel;
 
-public class TaskListViewModelTests
+public class BilliardTableViewModelTests
 {
     [Fact]
-    public void TryAddTask_should_append_when_service_succeeds()
+    public void TryInitialize_should_fill_ball_collection_when_input_valid()
     {
-        var service = new FakeTaskService();
-        var vm = new TaskListViewModel(service);
+        var service = new BilliardService(new InMemoryBallRepository(), randomSeed: 12);
+        var vm = new BilliardTableViewModel(service);
 
-        vm.TryAddTask("demo").Should().BeTrue();
-        vm.Tasks.Should().ContainSingle(t => t.Title == "demo");
+        vm.TryInitialize(5, 400, 250).Should().BeTrue();
+        vm.Balls.Should().HaveCount(5);
         vm.LastError.Should().BeNull();
     }
 
     [Fact]
-    public void TryAddTask_should_capture_error_when_service_throws()
+    public void TryInitialize_should_capture_error_when_input_invalid()
     {
-        var service = new FakeTaskService(shouldThrow: true);
-        var vm = new TaskListViewModel(service);
+        var service = new BilliardService(new InMemoryBallRepository(), randomSeed: 1);
+        var vm = new BilliardTableViewModel(service);
 
-        vm.TryAddTask("bad").Should().BeFalse();
+        vm.TryInitialize(0, 400, 250).Should().BeFalse();
         vm.LastError.Should().NotBeNull();
     }
 
-    private sealed class FakeTaskService : ITaskService
+    [Fact]
+    public void Step_should_update_positions_after_initialization()
     {
-        private readonly bool _shouldThrow;
-        private readonly List<TaskItem> _items = new();
+        var service = new BilliardService(new InMemoryBallRepository(), randomSeed: 3);
+        var vm = new BilliardTableViewModel(service);
+        vm.TryInitialize(2, 350, 220).Should().BeTrue();
+        var before = vm.Balls.Select(b => (b.X, b.Y)).ToArray();
 
-        public FakeTaskService(bool shouldThrow = false)
-        {
-            _shouldThrow = shouldThrow;
-        }
+        vm.Step(0.03);
+        var after = vm.Balls.Select(b => (b.X, b.Y)).ToArray();
 
-        public TaskItem AddTask(string title)
-        {
-            if (_shouldThrow)
-            {
-                throw new InvalidOperationException("boom");
-            }
-
-            var item = new TaskItem(Guid.NewGuid(), title, DateTime.UtcNow);
-            _items.Add(item);
-            return item;
-        }
-
-        public TaskItem CompleteTask(Guid id)
-        {
-            var item = _items.First(x => x.Id == id);
-            item.MarkCompleted(DateTime.UtcNow);
-            return item;
-        }
-
-        public IReadOnlyCollection<TaskItem> GetAll() => _items.ToList();
-
-        public IReadOnlyCollection<TaskItem> GetOpen() => _items.Where(t => !t.IsCompleted).ToList();
-
-        public bool Remove(Guid id) => _items.RemoveAll(t => t.Id == id) > 0;
+        after.Should().NotBeEquivalentTo(before);
     }
 }

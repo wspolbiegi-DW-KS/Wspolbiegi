@@ -8,30 +8,14 @@
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
       "Data/1.0.0": {
-        "dependencies": {
-          "PresentationModel": "1.0.0"
-        },
         "runtime": {
           "Data.dll": {}
-        }
-      },
-      "PresentationModel/1.0.0": {
-        "runtime": {
-          "PresentationModel.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
         }
       }
     }
   },
   "libraries": {
     "Data/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "PresentationModel/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

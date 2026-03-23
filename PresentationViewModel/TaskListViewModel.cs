@@ -7,20 +7,20 @@ using ReferenceApplicationArchitecture.BusinessLogic;
 using ReferenceApplicationArchitecture.PresentationModel;
 
 /// <summary>
-/// ViewModel exposing task operations to the WPF view.
+/// ViewModel exposing billiard simulation operations to the WPF view.
 /// </summary>
-public class TaskListViewModel : INotifyPropertyChanged
+public class BilliardTableViewModel : INotifyPropertyChanged
 {
-    private readonly ITaskService _taskService;
+    private readonly IBilliardService _service;
     private string? _lastError;
 
-    public TaskListViewModel(ITaskService taskService)
+    public BilliardTableViewModel(IBilliardService service)
     {
-        _taskService = taskService ?? throw new ArgumentNullException(nameof(taskService));
-        Tasks = new ObservableCollection<TaskItem>(_taskService.GetAll());
+        _service = service ?? throw new ArgumentNullException(nameof(service));
+        Balls = new ObservableCollection<BallViewData>();
     }
 
-    public ObservableCollection<TaskItem> Tasks { get; }
+    public ObservableCollection<BallViewData> Balls { get; }
 
     public string? LastError
     {
@@ -35,12 +35,12 @@ public class TaskListViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool TryAddTask(string? title)
+    public bool TryInitialize(int ballCount, double tableWidth, double tableHeight)
     {
         try
         {
-            var task = _taskService.AddTask(title ?? string.Empty);
-            Tasks.Add(task);
+            _service.Initialize(ballCount, tableWidth, tableHeight);
+            Refresh();
             LastError = null;
             return true;
         }
@@ -51,29 +51,19 @@ public class TaskListViewModel : INotifyPropertyChanged
         }
     }
 
-    public bool TryCompleteTask(Guid taskId)
+    public void Step(double deltaTimeSeconds)
     {
-        try
-        {
-            var updated = _taskService.CompleteTask(taskId);
-            var index = Tasks.IndexOf(Tasks.First(t => t.Id == taskId));
-            Tasks[index] = updated;
-            LastError = null;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            LastError = ex.Message;
-            return false;
-        }
+        _service.Step(deltaTimeSeconds);
+        Refresh();
     }
 
-    public void Refresh()
+    private void Refresh()
     {
-        Tasks.Clear();
-        foreach (var task in _taskService.GetAll())
+        var balls = _service.GetBalls();
+        Balls.Clear();
+        foreach (var ball in balls)
         {
-            Tasks.Add(task);
+            Balls.Add(new BallViewData(ball.Id, ball.X, ball.Y, ball.Radius));
         }
     }
 

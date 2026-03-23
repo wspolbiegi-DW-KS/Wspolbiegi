@@ -1,37 +1,25 @@
 <Window x:Class="ReferenceApplicationArchitecture.PresentationView.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Layered Task Board" Height="450" Width="800" MinWidth="600" MinHeight="350">
+        Title="Wspolbiezny Stol Bilardowy" Height="520" Width="900" MinWidth="700" MinHeight="420">
     <Grid Margin="12">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Task Board" FontSize="24" FontWeight="Bold" />
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,12">
-            <TextBox x:Name="TaskTitleBox" Width="400" Height="32" Margin="0,0,8,0" VerticalContentAlignment="Center"/>
-            <Button Content="Add" Width="80" Height="32" Margin="0,0,8,0" Click="OnAddTask" />
-            <Button Content="Complete Selected" Width="140" Height="32" Margin="0,0,8,0" Click="OnCompleteTask" />
-            <Button Content="Refresh" Width="80" Height="32" Click="OnRefresh" />
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+            <TextBlock Text="Liczba kul:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox x:Name="BallCountBox" Width="80" Height="28" VerticalContentAlignment="Center" Text="12" Margin="0,0,8,0" />
+            <Button Content="Start" Width="90" Height="28" Margin="0,0,8,0" Click="OnStartSimulation" />
+            <Button Content="Stop" Width="90" Height="28" Click="OnStopSimulation" />
         </StackPanel>
 
-        <ListBox x:Name="TaskList" Grid.Row="2" ItemsSource="{Binding Tasks}" SelectedValuePath="Id">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Padding="8" Margin="0,0,0,8" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
-                        <StackPanel>
-                            <TextBlock Text="{Binding Title}" FontSize="16" />
-                            <TextBlock Text="{Binding CreatedAt, StringFormat=Created: {0:yyyy-MM-dd HH:mm}}" FontSize="12" Foreground="#555" />
-                            <TextBlock Text="{Binding IsCompleted, StringFormat=Status: {0}}" FontSize="12" />
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Border Grid.Row="1" BorderBrush="#2D2D2D" BorderThickness="2" CornerRadius="6" Background="#1F6A31">
+            <Canvas x:Name="TableCanvas" Margin="8" Background="#2F8C45" />
+        </Border>
 
-        <TextBlock Grid.Row="3" Text="{Binding LastError}" Foreground="Red" />
+        <TextBlock x:Name="ErrorText" Grid.Row="2" Foreground="Red" Margin="0,10,0,0" />
     </Grid>
 </Window>

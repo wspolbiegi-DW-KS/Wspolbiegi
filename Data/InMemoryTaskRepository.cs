@@ -1,46 +1,31 @@
 namespace ReferenceApplicationArchitecture.Data;
 
-using System.Collections.Concurrent;
-using ReferenceApplicationArchitecture.PresentationModel;
-
 /// <summary>
-/// Thread-safe in-memory repository. No external storage dependencies.
+/// Thread-safe in-memory storage of balls.
 /// </summary>
-public class InMemoryTaskRepository : ITaskRepository
+public class InMemoryBallRepository : IBallRepository
 {
-    private readonly ConcurrentDictionary<Guid, TaskItem> _storage = new();
+    private readonly object _sync = new();
+    private List<BallEntity> _storage = new();
 
-    public TaskItem Add(TaskItem task)
+    public void ReplaceAll(IReadOnlyList<BallEntity> balls)
     {
-        if (!_storage.TryAdd(task.Id, task))
+        if (balls is null)
         {
-            throw new InvalidOperationException($"Task with id {task.Id} already exists.");
+            throw new ArgumentNullException(nameof(balls));
         }
 
-        return task;
+        lock (_sync)
+        {
+            _storage = balls.Select(b => b.Clone()).ToList();
+        }
     }
 
-    public TaskItem? GetById(Guid id)
+    public IReadOnlyList<BallEntity> GetAll()
     {
-        _storage.TryGetValue(id, out var task);
-        return task;
-    }
-
-    public IReadOnlyCollection<TaskItem> GetAll()
-    {
-        return _storage.Values
-            .OrderBy(t => t.CreatedAt)
-            .ToArray();
-    }
-
-    public TaskItem Update(TaskItem task)
-    {
-        _storage.AddOrUpdate(task.Id, _ => task, (_, __) => task);
-        return task;
-    }
-
-    public bool Remove(Guid id)
-    {
-        return _storage.TryRemove(id, out _);
+        lock (_sync)
+        {
+            return _storage.Select(b => b.Clone()).ToList();
+        }
     }
 }

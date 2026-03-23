@@ -29,9 +29,9 @@ public partial class App : Application
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<ITaskRepository, InMemoryTaskRepository>();
-        services.AddSingleton<ITaskService, TaskService>();
-        services.AddSingleton<TaskListViewModel>();
+        services.AddSingleton<IBallRepository, InMemoryBallRepository>();
+        services.AddSingleton<IBilliardService, BilliardService>();
+        services.AddSingleton<BilliardTableViewModel>();
         services.AddSingleton<MainWindow>();
     }
 }

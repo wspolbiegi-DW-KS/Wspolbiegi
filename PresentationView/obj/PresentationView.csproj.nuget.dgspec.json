@@ -91,11 +91,7 @@
         "frameworks": {
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
-            "projectReferences": {
-              "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj": {
-                "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {

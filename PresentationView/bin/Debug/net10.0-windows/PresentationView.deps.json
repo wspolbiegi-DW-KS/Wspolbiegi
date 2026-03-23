@@ -48,9 +48,6 @@
         }
       },
       "Data/1.0.0": {
-        "dependencies": {
-          "PresentationModel": "1.0.0"
-        },
         "runtime": {
           "Data.dll": {
             "assemblyVersion": "1.0.0.0",

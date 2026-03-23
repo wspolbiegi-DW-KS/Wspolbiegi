@@ -4,56 +4,57 @@ using FluentAssertions;
 using Xunit;
 using ReferenceApplicationArchitecture.BusinessLogic;
 using ReferenceApplicationArchitecture.Data;
-using ReferenceApplicationArchitecture.PresentationModel;
 
-public class TaskServiceTests
+public class BilliardServiceTests
 {
-    private readonly InMemoryTaskRepository _repository = new();
-
     [Fact]
-    public void AddTask_should_normalize_and_store()
+    public void Initialize_should_create_requested_ball_count()
     {
-        var service = CreateService();
-        var task = service.AddTask("  hello  ");
+        var repository = new InMemoryBallRepository();
+        var service = new BilliardService(repository, randomSeed: 1);
 
-        task.Title.Should().Be("hello");
-        _repository.GetAll().Should().ContainSingle(t => t.Id == task.Id);
+        service.Initialize(8, 400, 250);
+        var balls = service.GetBalls();
+
+        balls.Should().HaveCount(8);
+        balls.Should().OnlyContain(b => b.X >= b.Radius && b.Y >= b.Radius);
     }
 
     [Fact]
-    public void AddTask_should_throw_on_empty_title()
+    public void Step_should_move_balls()
     {
-        var service = CreateService();
-        var act = () => service.AddTask("   ");
+        var repository = new InMemoryBallRepository();
+        var service = new BilliardService(repository, randomSeed: 2);
+        service.Initialize(2, 300, 200);
+        var before = service.GetBalls().Select(b => (b.X, b.Y)).ToArray();
 
-        act.Should().Throw<ArgumentException>();
+        service.Step(0.2);
+        var after = service.GetBalls().Select(b => (b.X, b.Y)).ToArray();
+
+        after.Should().NotBeEquivalentTo(before);
     }
 
     [Fact]
-    public void CompleteTask_should_mark_done()
+    public void Step_should_swap_horizontal_velocities_after_head_on_collision()
     {
-        var clock = new Func<DateTime>(() => new DateTime(2024, 1, 1, 12, 0, 0, DateTimeKind.Utc));
-        var service = CreateService(clock);
-        var task = service.AddTask("test");
+        var repository = new InMemoryBallRepository();
+        repository.ReplaceAll(new[]
+        {
+            new BallEntity(Guid.NewGuid(), 100, 100, 50, 0, 10),
+            new BallEntity(Guid.NewGuid(), 119, 100, -50, 0, 10)
+        });
+        var service = new BilliardService(repository);
+        service.Initialize(2, 300, 200);
+        repository.ReplaceAll(new[]
+        {
+            new BallEntity(Guid.NewGuid(), 100, 100, 50, 0, 10),
+            new BallEntity(Guid.NewGuid(), 119, 100, -50, 0, 10)
+        });
 
-        var completed = service.CompleteTask(task.Id);
+        service.Step(0.01);
+        var balls = service.GetBalls();
 
-        completed.IsCompleted.Should().BeTrue();
-        completed.CompletedAt.Should().Be(clock());
-    }
-
-    [Fact]
-    public void Remove_should_delegate_to_repository()
-    {
-        var service = CreateService();
-        var task = service.AddTask("to remove");
-
-        service.Remove(task.Id).Should().BeTrue();
-        _repository.GetById(task.Id).Should().BeNull();
-    }
-
-    private TaskService CreateService(Func<DateTime>? clock = null)
-    {
-        return new TaskService(_repository, clock);
+        balls[0].Vx.Should().BeLessThan(0);
+        balls[1].Vx.Should().BeGreaterThan(0);
     }
 }
