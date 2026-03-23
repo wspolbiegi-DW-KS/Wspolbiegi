@@ -1,0 +1,13 @@
+# build folders
+bin/
+obj/
+
+# nested folders
+**/bin/
+**/obj/
+
+# Visual Studio / VS Code
+.vs/
+*.user
+*.suo
+*.cache
