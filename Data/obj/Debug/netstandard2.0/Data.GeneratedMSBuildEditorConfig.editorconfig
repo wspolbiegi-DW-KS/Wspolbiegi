@@ -1,6 +1,6 @@
 is_global = true
 build_property.RootNamespace = Data
-build_property.ProjectDir = C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\Data\
+build_property.ProjectDir = D:\Programowanie_wspolbiezne\Wspolbiegi\Data\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTUseWindowsUIXamlProjections = false

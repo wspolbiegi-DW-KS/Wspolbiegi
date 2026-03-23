@@ -180,19 +180,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kacpe\\.nuget\\packages\\": {}
+    "C:\\Users\\dawid\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj",
+      "projectUniqueName": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj",
       "projectName": "PresentationModel",
-      "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj",
-      "packagesPath": "C:\\Users\\kacpe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\obj\\",
+      "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj",
+      "packagesPath": "C:\\Users\\dawid\\.nuget\\packages\\",
+      "outputPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationModel\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kacpe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\dawid\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netstandard2.0"

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {}
+    "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {
+    "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj",
-        "packagesPath": "C:\\Users\\kacpe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\obj\\",
+        "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\dawid\\.nuget\\packages\\",
+        "outputPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kacpe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\dawid\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
@@ -26,8 +26,8 @@
           "netstandard2.0": {
             "targetAlias": "netstandard2.0",
             "projectReferences": {
-              "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\Data.csproj": {
-                "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\Data.csproj"
+              "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\Data.csproj": {
+                "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\Data.csproj"
               }
             }
           }
@@ -70,17 +70,17 @@
         }
       }
     },
-    "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\Data.csproj": {
+    "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\Data.csproj",
+        "projectUniqueName": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\Data.csproj",
-        "packagesPath": "C:\\Users\\kacpe\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\Data\\obj\\",
+        "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\Data.csproj",
+        "packagesPath": "C:\\Users\\dawid\\.nuget\\packages\\",
+        "outputPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\kacpe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\dawid\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"

@@ -181,19 +181,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kacpe\\.nuget\\packages\\": {}
+    "C:\\Users\\dawid\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationView\\PresentationView.csproj",
+      "projectUniqueName": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationView\\PresentationView.csproj",
       "projectName": "PresentationView",
-      "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationView\\PresentationView.csproj",
-      "packagesPath": "C:\\Users\\kacpe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationView\\obj\\",
+      "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationView\\PresentationView.csproj",
+      "packagesPath": "C:\\Users\\dawid\\.nuget\\packages\\",
+      "outputPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationView\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kacpe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\dawid\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0-windows"
@@ -205,14 +205,14 @@
         "net10.0-windows7.0": {
           "targetAlias": "net10.0-windows",
           "projectReferences": {
-            "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {
-              "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj"
+            "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj": {
+              "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\BusinessLogic\\BusinessLogic.csproj"
             },
-            "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj": {
-              "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj"
+            "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj": {
+              "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationModel\\PresentationModel.csproj"
             },
-            "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationViewModel\\PresentationViewModel.csproj": {
-              "projectPath": "C:\\Users\\kacpe\\OneDrive\\Pulpit\\Prywatne\\Studia\\Wyklady_i_cwiczenia\\IV_Semestr\\wspolbiegi_original\\Wspolbiegi\\PresentationViewModel\\PresentationViewModel.csproj"
+            "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationViewModel\\PresentationViewModel.csproj": {
+              "projectPath": "D:\\Programowanie_wspolbiezne\\Wspolbiegi\\PresentationViewModel\\PresentationViewModel.csproj"
             }
           }
         }
