@@ -1,0 +1,8 @@
+is_global = true
+build_property.RootNamespace = PresentationViewModel
+build_property.ProjectDir = C:\Users\kacpe\OneDrive\Pulpit\Prywatne\Studia\Wyklady_i_cwiczenia\IV_Semestr\wspolbiegi_original\Wspolbiegi\PresentationViewModel\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 
