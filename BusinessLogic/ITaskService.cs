@@ -1,7 +1,5 @@
 namespace ReferenceApplicationArchitecture.BusinessLogic;
 
-using ReferenceApplicationArchitecture.Data;
-
 /// <summary>
 /// Concurrent simulation operations for balls on a rectangular table.
 /// </summary>

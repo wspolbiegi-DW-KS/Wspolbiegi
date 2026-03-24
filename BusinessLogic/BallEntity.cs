@@ -1,7 +1,7 @@
-namespace ReferenceApplicationArchitecture.Data;
+namespace ReferenceApplicationArchitecture.BusinessLogic;
 
 /// <summary>
-/// Ball state stored in the data layer.
+/// Ball state used by the simulation domain.
 /// </summary>
 public sealed class BallEntity
 {

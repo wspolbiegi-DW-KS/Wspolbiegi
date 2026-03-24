@@ -1,7 +1,5 @@
 namespace ReferenceApplicationArchitecture.BusinessLogic;
 
-using ReferenceApplicationArchitecture.Data;
-
 /// <summary>
 /// Encapsulates concurrent simulation rules for billiard balls.
 /// </summary>

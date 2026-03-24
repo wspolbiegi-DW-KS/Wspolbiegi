@@ -1,5 +1,7 @@
 namespace ReferenceApplicationArchitecture.Data;
 
+using ReferenceApplicationArchitecture.BusinessLogic;
+
 /// <summary>
 /// Thread-safe in-memory storage of balls.
 /// </summary>

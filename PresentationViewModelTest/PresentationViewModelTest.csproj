@@ -15,5 +15,6 @@
     <ProjectReference Include="..\PresentationViewModel\PresentationViewModel.csproj" />
     <ProjectReference Include="..\PresentationModel\PresentationModel.csproj" />
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 </Project>

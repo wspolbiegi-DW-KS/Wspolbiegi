@@ -2,6 +2,7 @@ namespace ReferenceApplicationArchitecture.DataTest;
 
 using FluentAssertions;
 using Xunit;
+using ReferenceApplicationArchitecture.BusinessLogic;
 using ReferenceApplicationArchitecture.Data;
 
 public class BallRepositoryTests

@@ -5,4 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
+  </ItemGroup>
 </Project>
