@@ -1,11 +1,11 @@
-namespace ReferenceApplicationArchitecture.PresentationView;
+namespace ReferenceApplicationArchitecture.View;
 
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows;
-using ReferenceApplicationArchitecture.PresentationViewModel;
+using ReferenceApplicationArchitecture.ViewModel;
 
 public partial class MainWindow : Window
 {

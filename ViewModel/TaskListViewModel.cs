@@ -1,10 +1,10 @@
-namespace ReferenceApplicationArchitecture.PresentationViewModel;
+namespace ReferenceApplicationArchitecture.ViewModel;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using ReferenceApplicationArchitecture.BusinessLogic;
-using ReferenceApplicationArchitecture.PresentationModel;
+using ReferenceApplicationArchitecture.Logic;
+using ReferenceApplicationArchitecture.Model;
 
 /// <summary>
 /// ViewModel exposing billiard simulation operations to the WPF view.
@@ -17,10 +17,10 @@ public class BilliardTableViewModel : INotifyPropertyChanged
     public BilliardTableViewModel(IBilliardService service)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
-        Balls = new ObservableCollection<BallViewData>();
+        Balls = new ObservableCollection<Ball>();
     }
 
-    public ObservableCollection<BallViewData> Balls { get; }
+    public ObservableCollection<Ball> Balls { get; }
 
     public string? LastError
     {
@@ -63,7 +63,7 @@ public class BilliardTableViewModel : INotifyPropertyChanged
         Balls.Clear();
         foreach (var ball in balls)
         {
-            Balls.Add(new BallViewData(ball.Id, ball.X, ball.Y, ball.Radius));
+            Balls.Add(new Ball(ball.Id, ball.X, ball.Y, ball.Radius));
         }
     }
 

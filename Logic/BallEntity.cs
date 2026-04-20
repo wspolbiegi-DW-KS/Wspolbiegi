@@ -1,4 +1,4 @@
-namespace ReferenceApplicationArchitecture.BusinessLogic;
+namespace ReferenceApplicationArchitecture.Logic;
 
 /// <summary>
 /// Ball state used by the simulation domain.

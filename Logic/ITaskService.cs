@@ -1,4 +1,4 @@
-namespace ReferenceApplicationArchitecture.BusinessLogic;
+namespace ReferenceApplicationArchitecture.Logic;
 
 /// <summary>
 /// Concurrent simulation operations for balls on a rectangular table.

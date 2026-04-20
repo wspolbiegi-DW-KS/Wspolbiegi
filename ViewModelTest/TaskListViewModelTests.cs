@@ -1,10 +1,10 @@
-namespace ReferenceApplicationArchitecture.PresentationViewModelTest;
+namespace ReferenceApplicationArchitecture.ViewModelTest;
 
 using FluentAssertions;
 using Xunit;
-using ReferenceApplicationArchitecture.BusinessLogic;
+using ReferenceApplicationArchitecture.Logic;
 using ReferenceApplicationArchitecture.Data;
-using ReferenceApplicationArchitecture.PresentationViewModel;
+using ReferenceApplicationArchitecture.ViewModel;
 
 public class BilliardTableViewModelTests
 {

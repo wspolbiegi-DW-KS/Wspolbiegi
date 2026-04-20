@@ -1,11 +1,11 @@
-namespace ReferenceApplicationArchitecture.PresentationModel;
+namespace ReferenceApplicationArchitecture.Model;
 
 /// <summary>
 /// Presentation-layer model used by the WPF view to render a ball.
 /// </summary>
-public sealed class BallViewData
+public class Ball
 {
-    public BallViewData(Guid id, double x, double y, double radius)
+    public Ball(Guid id, double x, double y, double radius)
     {
         Id = id;
         X = x;

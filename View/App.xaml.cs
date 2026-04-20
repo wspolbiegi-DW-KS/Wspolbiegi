@@ -1,10 +1,10 @@
-namespace ReferenceApplicationArchitecture.PresentationView;
+namespace ReferenceApplicationArchitecture.View;
 
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using ReferenceApplicationArchitecture.BusinessLogic;
+using ReferenceApplicationArchitecture.Logic;
 using ReferenceApplicationArchitecture.Data;
-using ReferenceApplicationArchitecture.PresentationViewModel;
+using ReferenceApplicationArchitecture.ViewModel;
 
 public partial class App : Application
 {

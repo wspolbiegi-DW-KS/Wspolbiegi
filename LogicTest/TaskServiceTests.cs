@@ -1,8 +1,8 @@
-namespace ReferenceApplicationArchitecture.BusinessLogicTest;
+namespace ReferenceApplicationArchitecture.LogicTest;
 
 using FluentAssertions;
 using Xunit;
-using ReferenceApplicationArchitecture.BusinessLogic;
+using ReferenceApplicationArchitecture.Logic;
 using ReferenceApplicationArchitecture.Data;
 
 public class BilliardServiceTests

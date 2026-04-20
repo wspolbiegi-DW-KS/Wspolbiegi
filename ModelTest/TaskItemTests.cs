@@ -1,8 +1,8 @@
-namespace ReferenceApplicationArchitecture.PresentationModelTest;
+namespace ReferenceApplicationArchitecture.ModelTest;
 
 using FluentAssertions;
 using Xunit;
-using ReferenceApplicationArchitecture.PresentationModel;
+using ReferenceApplicationArchitecture.Model;
 
 public class BallViewDataTests
 {

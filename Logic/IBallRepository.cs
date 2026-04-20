@@ -1,4 +1,4 @@
-namespace ReferenceApplicationArchitecture.BusinessLogic;
+namespace ReferenceApplicationArchitecture.Logic;
 
 /// <summary>
 /// Thread-safe persistence boundary for simulation balls.
