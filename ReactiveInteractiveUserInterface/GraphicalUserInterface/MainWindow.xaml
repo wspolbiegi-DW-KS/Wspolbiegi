@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TP.ConcurrentProgramming.Presentation.ViewModel;assembly=TP.ConcurrentProgramming.PresentationViewModel"
         mc:Ignorable="d"
-        Title="Presentation layer targeting reactive behaviour" Height="auto" Width="auto">
+        Title="Billard Simulation" Height="auto" Width="auto">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-    <Border BorderThickness="4" BorderBrush="Green" Height="420" Width="400">
+    <Border BorderThickness="4" BorderBrush="#FF243A24" Height="420" Width="600">
         <ItemsControl ItemsSource="{Binding Balls}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas />
+                    <Canvas Background="#FF68F468"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="Blue" />
+                    <Ellipse Width= "{Binding Diameter}" Height="{Binding Diameter}" Fill="Red" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemContainerStyle>
