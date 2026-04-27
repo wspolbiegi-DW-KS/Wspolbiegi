@@ -1,25 +1,8 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-using System;
+﻿using System;
 using System.Windows.Input;
 
 namespace TP.ConcurrentProgramming.Presentation.ViewModel.MVVMLight
 {
-    /// <summary>
-    /// A generic command whose sole purpose is to relay its functionality to other
-    /// objects by invoking delegates. The default return value for the CanExecute
-    /// method is 'true'. This class allows you to accept command parameters in the
-    /// Execute and CanExecute callback methods.
-    /// </summary>
-    /// <remarks>The <see cref="CommandManager"/>handles automatic enabling/disabling of controls based on the CanExecute delegate.</remarks>
     public class RelayCommand : ICommand
     {
         #region constructors
