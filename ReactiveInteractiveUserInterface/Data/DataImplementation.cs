@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace TP.ConcurrentProgramming.Data
 {
@@ -35,10 +25,16 @@ namespace TP.ConcurrentProgramming.Data
             for (int i = 0; i < numberOfBalls; i++)
             {
                 Vector startingPosition = new(random.Next(100, 400 - 100), random.Next(100, 400 - 100));
-                Ball newBall = new(startingPosition, startingPosition);
+                Vector Velocity = new((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10);
+                Ball newBall = new(startingPosition, Velocity);
                 upperLayerHandler(startingPosition, newBall);
                 BallsList.Add(newBall);
             }
+        }
+
+        public override IVector CreateVector(double x, double y)
+        {
+            return new Vector(x, y);
         }
 
         #endregion DataAbstractAPI
@@ -81,7 +77,8 @@ namespace TP.ConcurrentProgramming.Data
         private void Move(object? x)
         {
             foreach (Ball item in BallsList)
-                item.Move(new Vector((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10));
+                //item.Move(new Vector((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10));
+                item.Move(new Vector(item.Velocity.x, item.Velocity.y));
         }
 
         #endregion private

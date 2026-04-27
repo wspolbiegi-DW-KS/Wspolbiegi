@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-namespace TP.ConcurrentProgramming.BusinessLogic.Test
+﻿namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
     [TestClass]
     public class BallUnitTest
@@ -17,7 +7,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         public void MoveTestMethod()
         {
             DataBallFixture dataBallFixture = new DataBallFixture();
-            Ball newInstance = new(dataBallFixture);
+            Ball newInstance = new(dataBallFixture, Data.DataAbstractAPI.GetDataLayer());
             int numberOfCallBackCalled = 0;
             newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
             dataBallFixture.Move();
