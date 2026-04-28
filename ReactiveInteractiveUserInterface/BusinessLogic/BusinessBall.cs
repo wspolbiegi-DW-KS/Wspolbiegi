@@ -4,8 +4,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class Ball : IBall
     {
-        private const double BoardWidth = 600.0 - 20.0; //rozmiar - minus średnica kuli
-        private const double BoardHeight = 420.0 - 20.0;
+        private const double BoardWidth = 600.0 - 25.0; //rozmiar - minus średnica kuli
+        private const double BoardHeight = 420.0 - 25.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
         public Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
