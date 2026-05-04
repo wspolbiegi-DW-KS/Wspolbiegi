@@ -50,6 +50,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model.Test
             {
                 throw new NotImplementedException();
             }
+            public double Diameter => 25.0;
         }
 
         #endregion testing instrumentation

@@ -14,10 +14,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class Ball : IBall
     {
-        private const double BoardWidth = 600.0 - 25.0; //rozmiar - minus średnica kuli
-        private const double BoardHeight = 420.0 - 25.0;
+        private const double BoardWidth = 600.0; 
+        private const double BoardHeight = 420.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
+
+        public double Diameter => ball.Diameter;
         public Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
         {
             this.ball = ball;
@@ -35,29 +37,20 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         private void RaisePositionChangeEvent(object? sender, Data.IVector e)
         {
-            //NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
-            double velX = (ball.Velocity.x);
-            double velY = (ball.Velocity.y);
+            double diameter = ball.Diameter;
+            double vX = (ball.Velocity.x);
+            double vY = (ball.Velocity.y);
 
-            if (e.x + velX > BoardWidth)
+            if ((e.x + vX) > (BoardWidth - diameter) || (e.x + vX) < 0)
             {
-                velX = Math.Abs(velX) * -1;
+                vX = -vX;
             }
-            else if (e.x + velX < 0)
+            if ((e.y + vY) > (BoardHeight - diameter) || (e.y + vY) < 0)
             {
-                velX = Math.Abs(velX);
-            }
-
-            if (e.y + velY > BoardHeight)
-            {
-                velY = Math.Abs(velY) * -1;
-            }
-            else if (e.y + velY < 0)
-            {
-                velY = Math.Abs(velY);
+                vY = -vY;
             }
 
-            ball.Velocity = dataLayer.CreateVector(velX, velY);
+            ball.Velocity = dataLayer.CreateVector(vX, vY);
 
             NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
         }
