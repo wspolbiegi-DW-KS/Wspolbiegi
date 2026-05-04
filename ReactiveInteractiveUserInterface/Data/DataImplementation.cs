@@ -18,7 +18,6 @@ namespace TP.ConcurrentProgramming.Data
 
         public DataImplementation()
         {
-            //MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(15));
         }
         //
         public override void MoveAll()
@@ -68,7 +67,6 @@ namespace TP.ConcurrentProgramming.Data
             {
                 if (disposing)
                 {
-                    //MoveTimer.Dispose();
                     BallsList.Clear();
                 }
                 Disposed = true;
@@ -79,7 +77,6 @@ namespace TP.ConcurrentProgramming.Data
 
         public override void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
@@ -88,10 +85,8 @@ namespace TP.ConcurrentProgramming.Data
 
         #region private
 
-        //private bool disposedValue;
         private bool Disposed = false;
 
-        //private readonly Timer MoveTimer;
         private Random RandomGenerator = new();
         private List<Ball> BallsList = [];
 
@@ -100,7 +95,6 @@ namespace TP.ConcurrentProgramming.Data
         {
             lock (BallsLock){
             foreach (Ball item in BallsList)
-                //item.Move(new Vector((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10));
                 item.Move(new Vector(item.Velocity.x, item.Velocity.y));
             }
         }
