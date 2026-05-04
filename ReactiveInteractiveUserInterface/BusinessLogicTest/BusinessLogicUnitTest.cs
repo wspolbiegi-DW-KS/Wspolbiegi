@@ -66,6 +66,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         {
             public override void Dispose()
             { }
+            public override void MoveAll()
+            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
@@ -92,6 +94,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             {
                 Disposed = true;
             }
+            public override void MoveAll()
+            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
@@ -117,6 +121,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
             public override void Dispose()
             { }
+            public override void MoveAll()
+            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
@@ -134,6 +140,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             private class DataBallFixture : Data.IBall
             {
                 public IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+                public double Diameter => 25.0;
 
                 public event EventHandler<IVector>? NewPositionNotification = null;
             }
