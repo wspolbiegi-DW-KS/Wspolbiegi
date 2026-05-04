@@ -1,4 +1,14 @@
-﻿using System.Diagnostics;
+﻿//____________________________________________________________________________________________________________________________________
+//
+//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
+//
+//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
+//
+//  https://github.com/mpostol/TP/discussions/182
+//
+//_____________________________________________________________________________________________________________________________________
+
+using System.Diagnostics;
 
 namespace TP.ConcurrentProgramming.Data
 {
@@ -8,8 +18,18 @@ namespace TP.ConcurrentProgramming.Data
 
         public DataImplementation()
         {
-            MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
+            //MoveTimer = new Timer(Move, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(15));
         }
+        //
+        public override void MoveAll()
+        {
+            lock (BallsLock)
+            {
+                foreach (Ball item in BallsList)
+                    item.Move(new Vector(item.Velocity.x, item.Velocity.y));
+            }
+        }
+        //
 
         #endregion ctor
 
@@ -17,6 +37,7 @@ namespace TP.ConcurrentProgramming.Data
 
         public override void Start(int numberOfBalls, Action<IVector, IBall> upperLayerHandler)
         {
+            
             if (Disposed)
                 throw new ObjectDisposedException(nameof(DataImplementation));
             if (upperLayerHandler == null)
@@ -47,7 +68,7 @@ namespace TP.ConcurrentProgramming.Data
             {
                 if (disposing)
                 {
-                    MoveTimer.Dispose();
+                    //MoveTimer.Dispose();
                     BallsList.Clear();
                 }
                 Disposed = true;
@@ -70,15 +91,18 @@ namespace TP.ConcurrentProgramming.Data
         //private bool disposedValue;
         private bool Disposed = false;
 
-        private readonly Timer MoveTimer;
+        //private readonly Timer MoveTimer;
         private Random RandomGenerator = new();
         private List<Ball> BallsList = [];
 
+        private readonly object BallsLock = new();
         private void Move(object? x)
         {
+            lock (BallsLock){
             foreach (Ball item in BallsList)
                 //item.Move(new Vector((RandomGenerator.NextDouble() - 0.5) * 10, (RandomGenerator.NextDouble() - 0.5) * 10));
                 item.Move(new Vector(item.Velocity.x, item.Velocity.y));
+            }
         }
 
         #endregion private

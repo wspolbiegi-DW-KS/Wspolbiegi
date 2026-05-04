@@ -1,11 +1,21 @@
-﻿using System.Numerics;
+﻿//____________________________________________________________________________________________________________________________________
+//
+//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
+//
+//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
+//
+//  https://github.com/mpostol/TP/discussions/182
+//
+//_____________________________________________________________________________________________________________________________________
+
+using System.Numerics;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
     internal class Ball : IBall
     {
-        private const double BoardWidth = 600.0 - 20.0; //rozmiar - minus średnica kuli
-        private const double BoardHeight = 420.0 - 20.0;
+        private const double BoardWidth = 600.0 - 25.0; //rozmiar - minus średnica kuli
+        private const double BoardHeight = 420.0 - 25.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
         public Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)

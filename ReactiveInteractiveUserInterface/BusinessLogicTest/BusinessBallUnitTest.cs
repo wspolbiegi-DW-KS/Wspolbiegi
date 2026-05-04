@@ -1,4 +1,14 @@
-﻿namespace TP.ConcurrentProgramming.BusinessLogic.Test
+﻿//____________________________________________________________________________________________________________________________________
+//
+//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
+//
+//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
+//
+//  https://github.com/mpostol/TP/discussions/182
+//
+//_____________________________________________________________________________________________________________________________________
+
+namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
     [TestClass]
     public class BallUnitTest
@@ -18,8 +28,8 @@
 
         private class DataBallFixture : Data.IBall
         {
-            public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+            //public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public Data.IVector Velocity { get; set; } = new VectorFixture(0.0, 0.0);
             public event EventHandler<Data.IVector>? NewPositionNotification;
 
             internal void Move()
