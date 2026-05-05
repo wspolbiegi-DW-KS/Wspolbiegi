@@ -18,7 +18,6 @@ namespace TP.ConcurrentProgramming.Data
         {
             Position = initialPosition;
             Velocity = initialVelocity;
-            //Diameter = 0.0;
         }
 
         #endregion ctor
@@ -37,7 +36,6 @@ namespace TP.ConcurrentProgramming.Data
         internal const double BallDiameter = 35.0;  
 
         public double Diameter => BallDiameter;
-        //public double Diameter { get; }
 
         private void RaiseNewPositionChangeNotification()
         {

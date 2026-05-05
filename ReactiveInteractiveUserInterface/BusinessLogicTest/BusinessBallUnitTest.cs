@@ -20,9 +20,24 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             Ball newInstance = new(dataBallFixture, Data.DataAbstractAPI.GetDataLayer());
             int numberOfCallBackCalled = 0;
             newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
-            dataBallFixture.Move();
+            dataBallFixture.Move(new VectorFixture(0.0, 0.0));
             Assert.AreEqual<int>(1, numberOfCallBackCalled);
         }
+
+        //
+        [TestMethod]
+        public void BounceOffRightWallTestMethod()
+        {
+            DataBallFixture dataBallFixture = new DataBallFixture();
+            dataBallFixture.Velocity = new VectorFixture(5.0, 0.0); // leci w prawo
+            Ball newInstance = new(dataBallFixture, new DataLayerFixture());
+
+            // pozycja tuż przy prawej ścianie: 600 - 25 = 575, więc 575 + 5 > 575
+            dataBallFixture.Move(new VectorFixture(572.0, 0.0));
+
+            Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany velX powinno być ujemne");
+        }
+        //
 
         #region testing instrumentation
 
@@ -33,10 +48,21 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             public event EventHandler<Data.IVector>? NewPositionNotification;
             public double Diameter => 25.0;
 
-            internal void Move()
+            internal void Move(VectorFixture position)
             {
-                NewPositionNotification?.Invoke(this, new VectorFixture(0.0, 0.0));
+                //NewPositionNotification?.Invoke(this, new VectorFixture(0.0, 0.0));
+                NewPositionNotification?.Invoke(this, position);
             }
+        }
+
+        private class DataLayerFixture : Data.DataAbstractAPI
+        {
+            public override void Dispose() { }
+            public override void MoveAll() { }
+            public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler)
+                => throw new NotImplementedException();
+            public override Data.IVector CreateVector(double x, double y)
+                => new VectorFixture(x, y);
         }
 
         private class VectorFixture : Data.IVector
