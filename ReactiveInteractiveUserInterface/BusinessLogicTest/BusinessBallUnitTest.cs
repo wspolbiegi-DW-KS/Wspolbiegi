@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-namespace TP.ConcurrentProgramming.BusinessLogic.Test
+﻿namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
     [TestClass]
     public class BallUnitTest
@@ -32,10 +22,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             dataBallFixture.Velocity = new VectorFixture(5.0, 0.0); // leci w prawo
             Ball newInstance = new(dataBallFixture, new DataLayerFixture());
 
-            // pozycja tuż przy prawej ścianie: 600 - 25 = 575, więc 575 + 5 > 575
             dataBallFixture.Move(new VectorFixture(572.0, 0.0));
 
-            Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany velX powinno być ujemne");
+            Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany vX powinno być ujemne");
         }
         //
 
