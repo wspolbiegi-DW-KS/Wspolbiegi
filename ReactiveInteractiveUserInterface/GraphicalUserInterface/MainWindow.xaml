@@ -14,9 +14,8 @@
         <Border Background="White" Height="60" Width="600">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Liczba kul: " VerticalContentAlignment="Center"/>
-                <TextBox Text="{Binding BallCount}" Width="50" Height="20" Margin="5"/>
-                <Button Content="Start" Width="80" Height="30" Margin="5"/>
-                <Button Content="Stop" Width="80" Height="30" Margin="5"/>
+                <TextBox x:Name="BallCountInput" Text="{Binding BallCount}" Width="50" Height="20" Margin="5"/>
+                <Button Content="Start" Width="80" Height="30" Margin="5" Click="StartButton_Click"/>
             </StackPanel>
         </Border>
         

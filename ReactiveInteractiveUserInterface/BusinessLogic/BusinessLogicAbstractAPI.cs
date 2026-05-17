@@ -9,6 +9,11 @@
             return modelInstance.Value;
         }
 
+        public static BusinessLogicAbstractAPI CreateNewBusinessLogicLayer()
+        {
+            return new BusinessLogicImplementation(); // zawsze świeża instancja
+        }
+
         #endregion Layer Factory
 
         #region Layer API

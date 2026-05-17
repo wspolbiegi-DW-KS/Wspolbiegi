@@ -29,6 +29,11 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
         public abstract void Start(int numberOfBalls);
 
+        public static ModelAbstractApi CreateNewModel()
+        {
+            return new ModelImplementation();
+        }
+
         #region IObservable
 
         public abstract IDisposable Subscribe(IObserver<IBall> observer);
