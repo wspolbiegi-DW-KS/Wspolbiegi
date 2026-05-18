@@ -26,6 +26,8 @@
         internal const double BallDiameter = 25.0;  
 
         public double Diameter => BallDiameter;
+        internal const double BallMass = 1.0; 
+        public double Mass => BallMass;
 
         private void RaiseNewPositionChangeNotification()
         {

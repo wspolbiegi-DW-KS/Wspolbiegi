@@ -14,6 +14,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewDataLayer() : underneathLayer;
             //MoveTimer = new Timer(_ => layerBellow.MoveAll(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(30));
+            MoveTimer = new Timer(_ => SimulationStep(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(16));
         }
 
         #endregion ctor
@@ -29,7 +30,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             Disposed = true;
         }
 
-        List<Ball> balls = new();
+        
 
         public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler)
         {
@@ -41,7 +42,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             //upperLayerHandler(new Position(startingPosition.x, startingPosition.y), new Ball(databall, layerBellow)));
             {
                 //Ball newBall = new Ball(databall, layerBellow, balls); // przekaż listę
-                Ball newBall = new Ball(databall, layerBellow, balls);
+                Ball newBall = new Ball(databall, layerBellow);
                 balls.Add(newBall);
                 upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
             });
@@ -52,10 +53,24 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         #region private
 
         private bool Disposed = false;
-
+        private List<Ball> balls = new();
         private readonly UnderneathLayerAPI layerBellow;
         private readonly Timer MoveTimer;
-        private static readonly object CollisionLock = new();
+        private readonly object collisionLock = new();
+
+        private void SimulationStep()
+        {
+            // najpierw kolizje między kulami (sekcja krytyczna)
+            lock (collisionLock)
+            {
+                for (int i = 0; i < balls.Count; i++)
+                    for (int j = i + 1; j < balls.Count; j++)
+                        balls[i].ResolveCollisionWith(balls[j]);
+            }
+
+            // potem ruch — współbieżnie
+            Parallel.ForEach(balls, ball => ball.Step());
+        }
 
         #endregion private
 

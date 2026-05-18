@@ -6,9 +6,6 @@ using UnderneathLayerAPI = TP.ConcurrentProgramming.BusinessLogic.BusinessLogicA
 
 namespace TP.ConcurrentProgramming.Presentation.Model
 {
-    /// <summary>
-    /// Class Model - implements the <see cref="ModelAbstractApi" />
-    /// </summary>
     internal class ModelImplementation : ModelAbstractApi
     {
         internal ModelImplementation() : this(null)

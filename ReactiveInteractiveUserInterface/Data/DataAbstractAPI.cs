@@ -60,7 +60,7 @@
 
         IVector Velocity { get; set; }
         double Diameter { get; }
-
+        double Mass { get; }
         IVector GetPosition();
         void Move(IVector delta);
     }
