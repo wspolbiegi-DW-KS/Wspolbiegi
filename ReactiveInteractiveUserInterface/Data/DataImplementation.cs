@@ -82,13 +82,13 @@ namespace TP.ConcurrentProgramming.Data
 
         private readonly object BallsLock = new();
         
-        private void Move(object? x)
+        /*private void Move(object? x)
         {
             lock (BallsLock){
             foreach (Ball item in BallsList)
                 item.Move(new Vector(item.Velocity.x, item.Velocity.y));
             }
-        }
+        }*/
 
         #endregion private
 
