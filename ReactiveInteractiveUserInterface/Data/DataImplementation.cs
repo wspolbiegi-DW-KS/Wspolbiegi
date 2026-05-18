@@ -37,6 +37,18 @@ namespace TP.ConcurrentProgramming.Data
                 Ball newBall = new(startingPosition, Velocity);
                 upperLayerHandler(startingPosition, newBall);
                 BallsList.Add(newBall);
+
+                Task.Run(async () =>
+                {
+                    while (updating)
+                    {
+                        lock (BallsLock)
+                        {
+                            newBall.Move(new Vector(newBall.Velocity.x, newBall.Velocity.y));
+                        }
+                        await Task.Delay(15);
+                    }
+                });
             }
         }
 
@@ -65,6 +77,7 @@ namespace TP.ConcurrentProgramming.Data
 
         public override void Dispose()
         {
+            updating = false;
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
@@ -77,7 +90,7 @@ namespace TP.ConcurrentProgramming.Data
 
         private Random RandomGenerator = new();
         private List<Ball> BallsList = [];
-
+        private bool updating = false;
         private readonly object BallsLock = new();
 
         #endregion private

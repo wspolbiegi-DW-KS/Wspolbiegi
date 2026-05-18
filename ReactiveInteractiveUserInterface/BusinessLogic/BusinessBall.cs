@@ -69,10 +69,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 double dvY = ball.Velocity.y - other.ball.Velocity.y;
                 double dot = dvX * nx + dvY * ny;
 
-                if (dot < 0) // zbliżają się do siebie
+                if (dot < 0) 
                 {
                     // wzór na sprężystą kolizję z masą
-                    double p = 2 * dot / (Mass + other.Mass);
+                    double p = 2 * (dot) / (Mass + other.Mass);
 
                     ball.Velocity = dataLayer.CreateVector(
                         ball.Velocity.x - p * other.Mass * nx,
