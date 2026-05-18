@@ -29,6 +29,7 @@ namespace TP.ConcurrentProgramming.Data
                 throw new ObjectDisposedException(nameof(DataImplementation));
             if (upperLayerHandler == null)
                 throw new ArgumentNullException(nameof(upperLayerHandler));
+            updating = true;
             Random random = new Random();
             for (int i = 0; i < numberOfBalls; i++)
             {
@@ -38,17 +39,6 @@ namespace TP.ConcurrentProgramming.Data
                 upperLayerHandler(startingPosition, newBall);
                 BallsList.Add(newBall);
 
-                Task.Run(async () =>
-                {
-                    while (updating)
-                    {
-                        lock (BallsLock)
-                        {
-                            newBall.Move(new Vector(newBall.Velocity.x, newBall.Velocity.y));
-                        }
-                        await Task.Delay(15);
-                    }
-                });
             }
         }
 
