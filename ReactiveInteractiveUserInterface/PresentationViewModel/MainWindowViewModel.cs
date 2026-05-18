@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using TP.ConcurrentProgramming.Presentation.Model;
 using TP.ConcurrentProgramming.Presentation.ViewModel.MVVMLight;
@@ -70,6 +60,20 @@ namespace TP.ConcurrentProgramming.Presentation.ViewModel
                 throw new ObjectDisposedException(nameof(MainWindowViewModel));
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public void Restart(int count)
+        {
+            if (Disposed)
+                throw new ObjectDisposedException(nameof(MainWindowViewModel));
+
+            Observer.Dispose();
+            ModelLayer.Dispose();
+            Balls.Clear();
+
+            ModelLayer = ModelAbstractApi.CreateNewModel(); 
+            Observer = ModelLayer.Subscribe<ModelIBall>(x => Balls.Add(x));
+            ModelLayer.Start(count);
         }
 
         #endregion IDisposable

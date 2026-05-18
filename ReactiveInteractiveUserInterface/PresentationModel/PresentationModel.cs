@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -16,9 +6,6 @@ using UnderneathLayerAPI = TP.ConcurrentProgramming.BusinessLogic.BusinessLogicA
 
 namespace TP.ConcurrentProgramming.Presentation.Model
 {
-    /// <summary>
-    /// Class Model - implements the <see cref="ModelAbstractApi" />
-    /// </summary>
     internal class ModelImplementation : ModelAbstractApi
     {
         internal ModelImplementation() : this(null)
@@ -26,7 +13,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
 
         internal ModelImplementation(UnderneathLayerAPI underneathLayer)
         {
-            layerBellow = underneathLayer == null ? UnderneathLayerAPI.GetBusinessLogicLayer() : underneathLayer;
+            layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewBusinessLogicLayer() : underneathLayer;
             eventObservable = Observable.FromEventPattern<BallChaneEventArgs>(this, "BallChanged");
         }
 
@@ -67,7 +54,7 @@ namespace TP.ConcurrentProgramming.Presentation.Model
         private void StartHandler(BusinessLogic.IPosition position, BusinessLogic.IBall ball)
         {
             ModelBall newBall = new ModelBall(position.x, position.y, ball) { Diameter = ball.Diameter };
-            BallChanged.Invoke(this, new BallChaneEventArgs() { Ball = newBall });
+            BallChanged?.Invoke(this, new BallChaneEventArgs() { Ball = newBall });
         }
 
         #endregion private

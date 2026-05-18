@@ -1,14 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using UnderneathLayerAPI = TP.ConcurrentProgramming.Data.DataAbstractAPI;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
@@ -22,8 +12,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
         {
-            layerBellow = underneathLayer == null ? UnderneathLayerAPI.GetDataLayer() : underneathLayer;
-            MoveTimer = new Timer(_ => layerBellow.MoveAll(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(30));
+            layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewDataLayer() : underneathLayer;
+            MoveTimer = new Timer(_ => SimulationStep(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(16));
         }
 
         #endregion ctor
@@ -34,10 +24,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             if (Disposed)
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
-            MoveTimer.Dispose();
             layerBellow.Dispose();
             Disposed = true;
         }
+
+        
 
         public override void Start(int numberOfBalls, Action<IPosition, IBall> upperLayerHandler)
         {
@@ -45,7 +36,15 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
             if (upperLayerHandler == null)
                 throw new ArgumentNullException(nameof(upperLayerHandler));
-            layerBellow.Start(numberOfBalls, (startingPosition, databall) => upperLayerHandler(new Position(startingPosition.x, startingPosition.y), new Ball(databall, layerBellow)));
+            layerBellow.Start(numberOfBalls, (startingPosition, databall) =>
+            {
+                Ball newBall = new Ball(databall, layerBellow);
+                lock (balls)
+                {
+                    balls.Add(newBall);
+                }
+                upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
+            });
         }
 
         #endregion BusinessLogicAbstractAPI
@@ -53,9 +52,27 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         #region private
 
         private bool Disposed = false;
-
+        private List<Ball> balls = new();
         private readonly UnderneathLayerAPI layerBellow;
         private readonly Timer MoveTimer;
+        private readonly object collisionLock = new();
+
+        private void SimulationStep()
+        {
+            // najpierw obsługiwana jest kolizja między kulami 
+            lock (collisionLock)
+            {
+                for (int i = 0; i < balls.Count; i++)
+                    for (int j = i + 1; j < balls.Count; j++)
+                        balls[i].ResolveCollisionWith(balls[j]);
+            }
+
+            // potem obsługiwany jest ruch
+            lock (balls)
+            {
+                Parallel.ForEach(balls, ball => ball.Step());
+            }
+        }
 
         #endregion private
 

@@ -1,13 +1,4 @@
-﻿//____________________________________________________________________________________________________________________________________
-//
-//  Copyright (C) 2024, Mariusz Postol LODZ POLAND.
-//
-//  To be in touch join the community by pressing the `Watch` button and get started commenting using the discussion panel at
-//
-//  https://github.com/mpostol/TP/discussions/182
-//
-//_____________________________________________________________________________________________________________________________________
-
+﻿using System.ComponentModel;
 using System.Numerics;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
@@ -20,11 +11,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly Data.IBall ball;
 
         public double Diameter => ball.Diameter;
-        public Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
+        public double Mass => ball.Mass;
+        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
-            ball.NewPositionNotification += RaisePositionChangeEvent;
         }
 
         #region IBall
@@ -35,26 +26,64 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         #region private
 
-        private void RaisePositionChangeEvent(object? sender, Data.IVector e)
+        internal void Step()
         {
-            double diameter = ball.Diameter;
-            double vX = (ball.Velocity.x);
-            double vY = (ball.Velocity.y);
+            Data.IVector pos = ball.GetPosition();
+            double vX = ball.Velocity.x;
+            double vY = ball.Velocity.y;
 
-            if ((e.x + vX) > (BoardWidth - diameter) || (e.x + vX) < 0)
-            {
+            double nextX = pos.x + vX;
+            double nextY = pos.y + vY;
+
+            //odbijanie od ścian
+            if (nextX > BoardWidth - Diameter || nextX < 0)
                 vX = -vX;
-            }
-            if ((e.y + vY) > (BoardHeight - diameter) || (e.y + vY) < 0)
-            {
+            if (nextY > BoardHeight - Diameter || nextY < 0)
                 vY = -vY;
-            }
 
             ball.Velocity = dataLayer.CreateVector(vX, vY);
+            ball.Move(ball.Velocity);
 
-            NewPositionNotification?.Invoke(this, new Position(e.x, e.y));
+            NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
         }
 
+        // wywołane przez timer przed Step — kolizja z inną kulą
+        internal void ResolveCollisionWith(Ball other)
+        {
+            Data.IVector posA = ball.GetPosition();
+            Data.IVector posB = other.ball.GetPosition();
+
+            double dx = (posA.x + Diameter / 2) - (posB.x + other.Diameter / 2);
+            double dy = (posA.y + Diameter / 2) - (posB.y + other.Diameter / 2);
+            //odległość między środkami kul
+            double distance = Math.Sqrt(dx * dx + dy * dy);
+            //double minDist = Diameter / 2 + other.Diameter / 2;
+            double minDist = Diameter; //obie kula mają ten sam rozmiar, więc można uprościć
+
+            if (distance < minDist)
+            {
+                double nx = dx / distance;
+                double ny = dy / distance;
+
+                double dvX = ball.Velocity.x - other.ball.Velocity.x;
+                double dvY = ball.Velocity.y - other.ball.Velocity.y;
+                double dot = dvX * nx + dvY * ny;
+
+                if (dot < 0) // zbliżają się do siebie
+                {
+                    // wzór na sprężystą kolizję z masą
+                    double p = 2 * dot / (Mass + other.Mass);
+
+                    ball.Velocity = dataLayer.CreateVector(
+                        ball.Velocity.x - p * other.Mass * nx,
+                        ball.Velocity.y - p * other.Mass * ny);
+
+                    other.ball.Velocity = dataLayer.CreateVector(
+                        other.ball.Velocity.x + p * Mass * nx,
+                        other.ball.Velocity.y + p * Mass * ny);
+                }
+            }
+        }
         #endregion private
     }
 }
