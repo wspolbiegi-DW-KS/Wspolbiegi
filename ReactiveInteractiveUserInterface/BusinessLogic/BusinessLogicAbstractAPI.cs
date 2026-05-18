@@ -11,7 +11,7 @@
 
         public static BusinessLogicAbstractAPI CreateNewBusinessLogicLayer()
         {
-            return new BusinessLogicImplementation(); // zawsze świeża instancja
+            return new BusinessLogicImplementation(); 
         }
 
         #endregion Layer Factory

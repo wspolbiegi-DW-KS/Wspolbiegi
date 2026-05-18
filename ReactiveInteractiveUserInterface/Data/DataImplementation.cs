@@ -9,7 +9,6 @@ namespace TP.ConcurrentProgramming.Data
         public DataImplementation()
         {
         }
-        //
         public override void MoveAll()
         {
             lock (BallsLock)
@@ -18,7 +17,6 @@ namespace TP.ConcurrentProgramming.Data
                     item.Move(item.Velocity);
             }
         }
-        //
 
         #endregion ctor
 
@@ -81,14 +79,6 @@ namespace TP.ConcurrentProgramming.Data
         private List<Ball> BallsList = [];
 
         private readonly object BallsLock = new();
-        
-        /*private void Move(object? x)
-        {
-            lock (BallsLock){
-            foreach (Ball item in BallsList)
-                item.Move(new Vector(item.Velocity.x, item.Velocity.y));
-            }
-        }*/
 
         #endregion private
 

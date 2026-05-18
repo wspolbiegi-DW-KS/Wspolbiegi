@@ -13,7 +13,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
         {
             layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewDataLayer() : underneathLayer;
-            //MoveTimer = new Timer(_ => layerBellow.MoveAll(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(30));
             MoveTimer = new Timer(_ => SimulationStep(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(16));
         }
 
@@ -25,7 +24,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             if (Disposed)
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
-            //MoveTimer.Dispose();
             layerBellow.Dispose();
             Disposed = true;
         }
@@ -39,11 +37,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             if (upperLayerHandler == null)
                 throw new ArgumentNullException(nameof(upperLayerHandler));
             layerBellow.Start(numberOfBalls, (startingPosition, databall) =>
-            //upperLayerHandler(new Position(startingPosition.x, startingPosition.y), new Ball(databall, layerBellow)));
             {
-                //Ball newBall = new Ball(databall, layerBellow, balls); // przekaż listę
                 Ball newBall = new Ball(databall, layerBellow);
-                balls.Add(newBall);
+                lock (balls)
+                {
+                    balls.Add(newBall);
+                }
                 upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
             });
         }
@@ -60,7 +59,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         private void SimulationStep()
         {
-            // najpierw kolizje między kulami (sekcja krytyczna)
+            // najpierw obsługiwana jest kolizja między kulami 
             lock (collisionLock)
             {
                 for (int i = 0; i < balls.Count; i++)
@@ -68,8 +67,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         balls[i].ResolveCollisionWith(balls[j]);
             }
 
-            // potem ruch — współbieżnie
-            Parallel.ForEach(balls, ball => ball.Step());
+            // potem obsługiwany jest ruch
+            lock (balls)
+            {
+                Parallel.ForEach(balls, ball => ball.Step());
+            }
         }
 
         #endregion private

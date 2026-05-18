@@ -11,12 +11,7 @@ namespace TP.ConcurrentProgramming.PresentationView
     {
         public MainWindow()
         {
-            //Random random = new Random();
             InitializeComponent();
-            //MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
-            //double screenWidth = SystemParameters.PrimaryScreenWidth;
-            //double screenHeight = SystemParameters.PrimaryScreenHeight;
-            //viewModel.Start(random.Next(5, 10));
         }
 
         /// <summary>
@@ -36,7 +31,6 @@ namespace TP.ConcurrentProgramming.PresentationView
             if (int.TryParse(BallCountInput.Text, out int count) && count > 0)
             {
                 MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
-                //viewModel.Start(count);
                 viewModel.Restart(count);
             }
             else
