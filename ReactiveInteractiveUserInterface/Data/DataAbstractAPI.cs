@@ -60,5 +60,8 @@
 
         IVector Velocity { get; set; }
         double Diameter { get; }
+
+        IVector GetPosition();
+        void Move(IVector delta);
     }
 }

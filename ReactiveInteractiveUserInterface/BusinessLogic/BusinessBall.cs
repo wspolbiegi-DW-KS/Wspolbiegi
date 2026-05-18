@@ -10,6 +10,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
         private readonly List<Ball> allBalls;
+        private readonly Timer moveTimer;
+        private readonly object moveLock = new();
 
         public double Diameter => ball.Diameter;
         public Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, List<Ball> allBalls)
@@ -18,15 +20,37 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             this.dataLayer = dataLayer;
             this.allBalls = allBalls;
             ball.NewPositionNotification += RaisePositionChangeEvent;
+
+            moveTimer = new Timer(_ => Move(), null,
+            TimeSpan.FromMilliseconds(Random.Shared.Next(0, 30)), // losowy start żeby nie startowały razem
+            TimeSpan.FromMilliseconds(30));
         }
 
         #region IBall
 
         public event EventHandler<IPosition>? NewPositionNotification;
 
+        public void Stop()
+        {
+            moveTimer.Dispose();
+        }
+
         #endregion IBall
 
         #region private
+
+        private void Move()
+        {
+            lock (moveLock)
+            {
+                Data.IVector pos = ball.GetPosition();
+                //double vX = ball.Velocity.x;
+                //double vY = ball.Velocity.y;
+
+                //ball.Move(dataLayer.CreateVector(vX, vY)); // to wywoła NewPositionNotification
+                ball.Move(ball.Velocity);
+            }
+        }
 
         private void RaisePositionChangeEvent(object? sender, Data.IVector e)
         {

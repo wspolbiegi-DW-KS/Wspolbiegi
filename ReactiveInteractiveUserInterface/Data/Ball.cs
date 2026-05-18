@@ -32,7 +32,7 @@
             NewPositionNotification?.Invoke(this, Position);
         }
 
-        internal void Move(Vector delta)
+        public void Move(IVector delta)
         {
             Position = new Vector(Position.x + delta.x, Position.y + delta.y);
             RaiseNewPositionChangeNotification();

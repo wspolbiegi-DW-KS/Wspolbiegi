@@ -15,7 +15,7 @@ namespace TP.ConcurrentProgramming.Data
             lock (BallsLock)
             {
                 foreach (Ball item in BallsList)
-                    item.Move(new Vector(item.Velocity.x, item.Velocity.y));
+                    item.Move(item.Velocity);
             }
         }
         //
