@@ -29,6 +29,7 @@ namespace TP.ConcurrentProgramming.Data
                 throw new ObjectDisposedException(nameof(DataImplementation));
             if (upperLayerHandler == null)
                 throw new ArgumentNullException(nameof(upperLayerHandler));
+            updating = true;
             Random random = new Random();
             for (int i = 0; i < numberOfBalls; i++)
             {
@@ -37,6 +38,7 @@ namespace TP.ConcurrentProgramming.Data
                 Ball newBall = new(startingPosition, Velocity);
                 upperLayerHandler(startingPosition, newBall);
                 BallsList.Add(newBall);
+
             }
         }
 
@@ -65,6 +67,7 @@ namespace TP.ConcurrentProgramming.Data
 
         public override void Dispose()
         {
+            updating = false;
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
@@ -77,7 +80,7 @@ namespace TP.ConcurrentProgramming.Data
 
         private Random RandomGenerator = new();
         private List<Ball> BallsList = [];
-
+        private bool updating = false;
         private readonly object BallsLock = new();
 
         #endregion private

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
+using System.Text;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -9,6 +10,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private const double BoardHeight = 420.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
+        private List<Ball> _allBalls;
+        private object _collisionLock;
+
+        private Thread _thread;
+        private volatile bool _running = false;
 
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
@@ -16,6 +22,44 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
+            _thread = new Thread(Run) { IsBackground = true };
+        }
+
+        internal void Start()
+        {
+            _running = true;
+            _thread.Start();
+        }
+
+        internal void Stop()
+        {
+            _running = false;
+        }
+
+        private void Run()
+        {
+            while (_running)
+            {
+                Thread.Sleep(16);
+                if (_allBalls != null)
+                {
+                    lock (_collisionLock)
+                    {
+                        foreach (var other in _allBalls)
+                        {
+                            if (!ReferenceEquals(this, other))
+                                ResolveCollisionWith(other);
+                        }
+                    }
+                }
+                Step();
+            }
+        }
+
+        internal void Initialize(List<Ball> allBalls, object collisionLock)
+        {
+            _allBalls = allBalls;
+            _collisionLock = collisionLock;
         }
 
         #region IBall
@@ -57,10 +101,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             double dy = (posA.y + Diameter / 2) - (posB.y + other.Diameter / 2);
             //odległość między środkami kul
             double distance = Math.Sqrt(dx * dx + dy * dy);
-            //double minDist = Diameter / 2 + other.Diameter / 2;
-            double minDist = Diameter; //obie kula mają ten sam rozmiar, więc można uprościć
+            double minDist = Diameter; 
 
-            if (distance < minDist)
+            if (distance <= minDist)
             {
                 double nx = dx / distance;
                 double ny = dy / distance;
@@ -69,10 +112,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 double dvY = ball.Velocity.y - other.ball.Velocity.y;
                 double dot = dvX * nx + dvY * ny;
 
-                if (dot < 0) // zbliżają się do siebie
+                if (dot < 0) 
                 {
                     // wzór na sprężystą kolizję z masą
-                    double p = 2 * dot / (Mass + other.Mass);
+                    double p = 2 * (dot) / (Mass + other.Mass);
 
                     ball.Velocity = dataLayer.CreateVector(
                         ball.Velocity.x - p * other.Mass * nx,

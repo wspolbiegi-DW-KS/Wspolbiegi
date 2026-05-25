@@ -1,4 +1,6 @@
-﻿namespace TP.ConcurrentProgramming.BusinessLogic.Test
+﻿using TP.ConcurrentProgramming.Data;
+
+namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
     [TestClass]
     public class BallUnitTest
@@ -7,11 +9,9 @@
         public void MoveTestMethod()
         {
             DataBallFixture dataBallFixture = new DataBallFixture();
-            //Ball newInstance = new(dataBallFixture, Data.DataAbstractAPI.GetDataLayer());
             Ball newInstance = new(dataBallFixture, new DataLayerFixture());
             int numberOfCallBackCalled = 0;
             newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
-            //dataBallFixture.Move(new VectorFixture(0.0, 0.0));
             newInstance.Step();
             Assert.AreEqual<int>(1, numberOfCallBackCalled);
         }
@@ -24,7 +24,6 @@
             dataBallFixture.Position = new VectorFixture(572.0, 0.0);
             Ball newInstance = new(dataBallFixture, new DataLayerFixture());
 
-            //dataBallFixture.Move(new VectorFixture(572.0, 0.0));
             newInstance.Step();
 
             Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany vX powinno być ujemne");
@@ -56,7 +55,6 @@
 
         private class DataBallFixture : Data.IBall
         {
-            //public Data.IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             public Data.IVector Velocity { get; set; } = new VectorFixture(0.0, 0.0);
             public Data.IVector Position { get; set; } = new VectorFixture(0.0, 0.0);
             public event EventHandler<Data.IVector>? NewPositionNotification;
@@ -65,7 +63,6 @@
 
             internal void Move(Data.IVector delta)
             {
-                //NewPositionNotification?.Invoke(this, new VectorFixture(0.0, 0.0));
                 Position = new VectorFixture(Position.x + delta.x, Position.y + delta.y);
                 NewPositionNotification?.Invoke(this, Position);
             }

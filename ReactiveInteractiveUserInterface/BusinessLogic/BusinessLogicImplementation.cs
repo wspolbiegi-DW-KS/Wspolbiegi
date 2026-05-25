@@ -13,7 +13,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
         {
             layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewDataLayer() : underneathLayer;
-            MoveTimer = new Timer(_ => SimulationStep(), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(16));
         }
 
         #endregion ctor
@@ -24,6 +23,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             if (Disposed)
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
+            lock (balls) { foreach (var b in balls) b.Stop(); }
             layerBellow.Dispose();
             Disposed = true;
         }
@@ -44,6 +44,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     balls.Add(newBall);
                 }
                 upperLayerHandler(new Position(startingPosition.x, startingPosition.y), newBall);
+                newBall.Initialize(balls, _collisionLock);
+                newBall.Start();
             });
         }
 
@@ -54,25 +56,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private bool Disposed = false;
         private List<Ball> balls = new();
         private readonly UnderneathLayerAPI layerBellow;
-        private readonly Timer MoveTimer;
-        private readonly object collisionLock = new();
-
-        private void SimulationStep()
-        {
-            // najpierw obsługiwana jest kolizja między kulami 
-            lock (collisionLock)
-            {
-                for (int i = 0; i < balls.Count; i++)
-                    for (int j = i + 1; j < balls.Count; j++)
-                        balls[i].ResolveCollisionWith(balls[j]);
-            }
-
-            // potem obsługiwany jest ruch
-            lock (balls)
-            {
-                Parallel.ForEach(balls, ball => ball.Step());
-            }
-        }
+        private readonly object _collisionLock = new();
 
         #endregion private
 
