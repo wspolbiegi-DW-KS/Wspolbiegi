@@ -10,20 +10,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private const double BoardHeight = 420.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
-        private readonly List<Ball> _allBalls;
-        private readonly object _collisionLock;
+        private List<Ball> _allBalls;
+        private object _collisionLock;
 
         private Thread _thread;
         private volatile bool _running = false;
 
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
-        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, List<Ball> allBalls, object collisionLock)
+        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
-            _allBalls = allBalls;
-            _collisionLock = collisionLock;
             _thread = new Thread(Run) { IsBackground = true };
         }
 
@@ -43,17 +41,25 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             while (_running)
             {
                 Thread.Sleep(16);
-
-                lock (_collisionLock)
+                if (_allBalls != null)
                 {
-                    foreach (var other in _allBalls)
+                    lock (_collisionLock)
                     {
-                        if (!ReferenceEquals(this, other))
-                            ResolveCollisionWith(other);
+                        foreach (var other in _allBalls)
+                        {
+                            if (!ReferenceEquals(this, other))
+                                ResolveCollisionWith(other);
+                        }
                     }
                 }
                 Step();
             }
+        }
+
+        internal void Initialize(List<Ball> allBalls, object collisionLock)
+        {
+            _allBalls = allBalls;
+            _collisionLock = collisionLock;
         }
 
         #region IBall
@@ -95,10 +101,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
             double dy = (posA.y + Diameter / 2) - (posB.y + other.Diameter / 2);
             //odległość między środkami kul
             double distance = Math.Sqrt(dx * dx + dy * dy);
-            //double minDist = Diameter / 2 + other.Diameter / 2;
-            double minDist = Diameter; //obie kula mają ten sam rozmiar, więc można uprościć
+            double minDist = Diameter; 
 
-            if (distance < minDist)
+            if (distance <= minDist)
             {
                 double nx = dx / distance;
                 double ny = dy / distance;
