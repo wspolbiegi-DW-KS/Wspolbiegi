@@ -1,4 +1,6 @@
-﻿namespace TP.ConcurrentProgramming.BusinessLogic.Test
+﻿using TP.ConcurrentProgramming.Data;
+
+namespace TP.ConcurrentProgramming.BusinessLogic.Test
 {
     [TestClass]
     public class BallUnitTest

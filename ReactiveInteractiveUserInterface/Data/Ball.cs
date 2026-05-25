@@ -23,6 +23,7 @@
         #region private
 
         private Vector Position;
+        private readonly object _lock = new object();
         internal const double BallDiameter = 25.0;  
 
         public double Diameter => BallDiameter;
@@ -36,12 +37,18 @@
 
         public void Move(IVector delta)
         {
-            Position = new Vector(Position.x + delta.x, Position.y + delta.y);
+            lock (_lock)
+            {
+                Position = new Vector(Position.x + delta.x, Position.y + delta.y);
+            }
             RaiseNewPositionChangeNotification();
         }
 
         public IVector GetPosition() {
-              return Position;
+            lock (_lock)
+            {
+                return Position;
+            }
         }
 
         #endregion private

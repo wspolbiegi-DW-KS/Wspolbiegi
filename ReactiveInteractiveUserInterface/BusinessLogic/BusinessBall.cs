@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
+using System.Text;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -9,13 +10,50 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private const double BoardHeight = 420.0;
         private readonly Data.DataAbstractAPI dataLayer;
         private readonly Data.IBall ball;
+        private readonly List<Ball> _allBalls;
+        private readonly object _collisionLock;
+
+        private Thread _thread;
+        private volatile bool _running = false;
 
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
-        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
+        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, List<Ball> allBalls, object collisionLock)
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
+            _allBalls = allBalls;
+            _collisionLock = collisionLock;
+            _thread = new Thread(Run) { IsBackground = true };
+        }
+
+        internal void Start()
+        {
+            _running = true;
+            _thread.Start();
+        }
+
+        internal void Stop()
+        {
+            _running = false;
+        }
+
+        private void Run()
+        {
+            while (_running)
+            {
+                Thread.Sleep(16);
+
+                lock (_collisionLock)
+                {
+                    foreach (var other in _allBalls)
+                    {
+                        if (!ReferenceEquals(this, other))
+                            ResolveCollisionWith(other);
+                    }
+                }
+                Step();
+            }
         }
 
         #region IBall
