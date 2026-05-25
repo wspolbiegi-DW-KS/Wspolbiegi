@@ -43,14 +43,17 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 Thread.Sleep(16);
                 if (_allBalls != null)
                 {
+                    List<Ball> snapshot;
                     lock (_collisionLock)
                     {
-                        foreach (var other in _allBalls)
-                        {
-                            if (!ReferenceEquals(this, other))
-                                ResolveCollisionWith(other);
-                        }
+                        snapshot = new List<Ball>(_allBalls);
                     }
+                    foreach (var other in snapshot)
+                    {
+                        if (!ReferenceEquals(this, other))
+                            ResolveCollisionWith(other);
+                    }
+                    
                 }
                 Step();
             }
