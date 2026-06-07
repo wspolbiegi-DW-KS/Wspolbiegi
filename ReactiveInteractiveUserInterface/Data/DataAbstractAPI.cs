@@ -22,9 +22,7 @@
 
         public abstract IVector CreateVector (double x, double y);
 
-        //
         public abstract void MoveAll();
-        //
 
         #endregion public API
 
@@ -62,6 +60,15 @@
         double Diameter { get; }
         double Mass { get; }
         IVector GetPosition();
-        void Move(IVector delta);
+        int Id { get; }
+        public void Move(IVector delta);
     }
+
+
+    public interface ILogger
+    {
+        void Log(string message, DateTime? timestamp = null);
+        void Dispose();
+    }
+
 }

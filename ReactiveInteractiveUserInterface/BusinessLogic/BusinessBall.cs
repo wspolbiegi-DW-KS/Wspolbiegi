@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
 using System.Text;
+using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -16,12 +17,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private Thread _thread;
         private volatile bool _running = false;
 
+        private Logger _logger;
+        private object databall;
+        private object Id;
+
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
-        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
+        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, Logger logger)
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
+            this._logger = logger;
+            _logger.Log($"New Ball - ID {ball.Id}, position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
             _thread = new Thread(Run) { IsBackground = true };
         }
 
@@ -81,20 +88,23 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             double nextX = pos.x + vX;
             double nextY = pos.y + vY;
+            Boolean isColliding = false;
 
             //odbijanie od ścian
             if (nextX > BoardWidth - Diameter || nextX < 0)
                 vX = -vX;
+                isColliding = true;
             if (nextY > BoardHeight - Diameter || nextY < 0)
                 vY = -vY;
+                isColliding = true;
 
             ball.Velocity = dataLayer.CreateVector(vX, vY);
             ball.Move(ball.Velocity);
 
             NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
+            _logger.Log($"Bounce - {ball.Id} position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), new velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
         }
 
-        // wywołane przez timer przed Step — kolizja z inną kulą
         internal void ResolveCollisionWith(Ball other)
         {
             Data.IVector posA = ball.GetPosition();
@@ -129,6 +139,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         other.ball.Velocity.y + p * Mass * ny);
                 }
             }
+            _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball1 ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)}), ball2 ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
+
         }
         #endregion private
     }

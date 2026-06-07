@@ -1,13 +1,16 @@
-﻿namespace TP.ConcurrentProgramming.Data
+﻿using System.Security.Cryptography;
+
+namespace TP.ConcurrentProgramming.Data
 {
     internal class Ball : IBall
     {
         #region ctor
 
-        internal Ball(Vector initialPosition, Vector initialVelocity)
+        internal Ball(Vector initialPosition, Vector initialVelocity, int id)
         {
             Position = initialPosition;
             Velocity = initialVelocity;
+            Id = id;
         }
 
         #endregion ctor
@@ -29,6 +32,7 @@
         public double Diameter => BallDiameter;
         internal const double BallMass = 1.0; 
         public double Mass => BallMass;
+        public int Id { get; }
 
         private void RaiseNewPositionChangeNotification()
         {
