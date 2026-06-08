@@ -9,10 +9,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         public void MoveTestMethod()
         {
             DataBallFixture dataBallFixture = new DataBallFixture();
-            Ball newInstance = new(dataBallFixture, new DataLayerFixture());
+            Logger logger = new Logger();
+            Ball newInstance = new(dataBallFixture, new DataLayerFixture(), logger);
             int numberOfCallBackCalled = 0;
             newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
-            newInstance.Step();
+            newInstance.Step(0.1);
             Assert.AreEqual<int>(1, numberOfCallBackCalled);
         }
 
@@ -22,9 +23,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             DataBallFixture dataBallFixture = new DataBallFixture();
             dataBallFixture.Velocity = new VectorFixture(5.0, 0.0);
             dataBallFixture.Position = new VectorFixture(572.0, 0.0);
-            Ball newInstance = new(dataBallFixture, new DataLayerFixture());
+            Logger logger = new Logger();
+            Ball newInstance = new(dataBallFixture, new DataLayerFixture(), logger);
 
-            newInstance.Step();
+            newInstance.Step(0.1);
 
             Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany vX powinno być ujemne");
         }
@@ -42,8 +44,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             ballB.Velocity = new VectorFixture(-2.0, 0.0); // leci w lewo
 
             DataLayerFixture dataLayer = new DataLayerFixture();
-            Ball instanceA = new(ballA, dataLayer);
-            Ball instanceB = new(ballB, dataLayer);
+            Logger logger = new Logger();
+            Ball instanceA = new(ballA, dataLayer, logger);
+            Ball instanceB = new(ballB, dataLayer, logger);
 
             instanceA.ResolveCollisionWith(instanceB);
 
@@ -55,6 +58,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
         private class DataBallFixture : Data.IBall
         {
+            public int Id => 0;
             public Data.IVector Velocity { get; set; } = new VectorFixture(0.0, 0.0);
             public Data.IVector Position { get; set; } = new VectorFixture(0.0, 0.0);
             public event EventHandler<Data.IVector>? NewPositionNotification;
@@ -78,7 +82,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         private class DataLayerFixture : Data.DataAbstractAPI
         {
             public override void Dispose() { }
-            public override void MoveAll() { }
             public override void Start(int numberOfBalls, Action<Data.IVector, Data.IBall> upperLayerHandler)
                 => throw new NotImplementedException();
             public override Data.IVector CreateVector(double x, double y)

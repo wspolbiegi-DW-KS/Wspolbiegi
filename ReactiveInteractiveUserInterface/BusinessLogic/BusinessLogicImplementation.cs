@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using TP.ConcurrentProgramming.Data;
 using UnderneathLayerAPI = TP.ConcurrentProgramming.Data.DataAbstractAPI;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
@@ -13,6 +14,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         internal BusinessLogicImplementation(UnderneathLayerAPI? underneathLayer)
         {
             layerBellow = underneathLayer == null ? UnderneathLayerAPI.CreateNewDataLayer() : underneathLayer;
+            logger = new Logger();
         }
 
         #endregion ctor
@@ -25,6 +27,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
             lock (balls) { foreach (var b in balls) b.Stop(); }
             layerBellow.Dispose();
+            logger.Dispose();
             Disposed = true;
         }
 
@@ -36,9 +39,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 throw new ObjectDisposedException(nameof(BusinessLogicImplementation));
             if (upperLayerHandler == null)
                 throw new ArgumentNullException(nameof(upperLayerHandler));
+            logger.Log($"Program started with {numberOfBalls} balls");
             layerBellow.Start(numberOfBalls, (startingPosition, databall) =>
             {
-                Ball newBall = new Ball(databall, layerBellow);
+                Ball newBall = new Ball(databall, layerBellow, logger);
                 lock (balls)
                 {
                     balls.Add(newBall);
@@ -55,6 +59,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         private bool Disposed = false;
         private List<Ball> balls = new();
+        private Logger logger;
         private readonly UnderneathLayerAPI layerBellow;
         private readonly object _collisionLock = new();
 

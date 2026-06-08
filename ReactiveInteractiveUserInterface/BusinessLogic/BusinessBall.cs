@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
 using System.Text;
+using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -16,12 +17,18 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private Thread _thread;
         private volatile bool _running = false;
 
+        private Logger _logger;
+
+        private DateTime _lastUpdateTime = DateTime.UtcNow;
+
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
-        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer)
+        internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, Logger logger)
         {
             this.ball = ball;
             this.dataLayer = dataLayer;
+            this._logger = logger;
+            _logger.Log($"New Ball - ID {ball.Id}, position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
             _thread = new Thread(Run) { IsBackground = true };
         }
 
@@ -40,7 +47,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             while (_running)
             {
-                Thread.Sleep(16);
+                DateTime now = DateTime.UtcNow;
+                double dt = (now - _lastUpdateTime).TotalSeconds;
+                _lastUpdateTime = now;
+                if (dt > 0.1) dt = 0.1;
+
                 if (_allBalls != null)
                 {
                     List<Ball> snapshot;
@@ -50,12 +61,13 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     }
                     foreach (var other in snapshot)
                     {
-                        if (!ReferenceEquals(this, other))
+                        if (!ReferenceEquals(this, other) && ball.Id < other.ball.Id)
                             ResolveCollisionWith(other);
                     }
                     
                 }
-                Step();
+                Step(dt);
+                Thread.Sleep(16);
             }
         }
 
@@ -73,28 +85,43 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         #region private
 
-        internal void Step()
+        internal void Step(double dt)
         {
             Data.IVector pos = ball.GetPosition();
             double vX = ball.Velocity.x;
             double vY = ball.Velocity.y;
+            dt *= 50; //skalujemy dt, aby ruch był bardziej widoczny
 
-            double nextX = pos.x + vX;
-            double nextY = pos.y + vY;
+            //uwzględnienie upływu czasu przy obliczeniach położenia
+            double nextX = pos.x + vX * dt;
+            double nextY = pos.y + vY * dt;
+            Boolean isColliding = false;
 
             //odbijanie od ścian
             if (nextX > BoardWidth - Diameter || nextX < 0)
+            {
                 vX = -vX;
+                isColliding = true;
+            }
             if (nextY > BoardHeight - Diameter || nextY < 0)
+            {
                 vY = -vY;
-
+                isColliding = true;
+            }
             ball.Velocity = dataLayer.CreateVector(vX, vY);
-            ball.Move(ball.Velocity);
+            ball.Move(
+                dataLayer.CreateVector(
+                vX*dt,
+                vY*dt )
+            );
 
             NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
+            if (isColliding == true)
+            {
+                _logger.Log($"Bounce - {ball.Id} position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), new velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
+            }
         }
 
-        // wywołane przez timer przed Step — kolizja z inną kulą
         internal void ResolveCollisionWith(Ball other)
         {
             Data.IVector posA = ball.GetPosition();
@@ -128,6 +155,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         other.ball.Velocity.x + p * Mass * nx,
                         other.ball.Velocity.y + p * Mass * ny);
                 }
+                _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
+                    $"{Math.Round(ball.Velocity.y, 4)}), ball {other.ball.Id} ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
+
             }
         }
         #endregion private

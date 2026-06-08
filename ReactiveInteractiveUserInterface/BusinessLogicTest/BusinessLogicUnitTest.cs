@@ -56,8 +56,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
         {
             public override void Dispose()
             { }
-            public override void MoveAll()
-            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
@@ -84,8 +82,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             {
                 Disposed = true;
             }
-            public override void MoveAll()
-            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
@@ -111,14 +107,12 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
             public override void Dispose()
             { }
-            public override void MoveAll()
-            { }
 
             public override void Start(int numberOfBalls, Action<IVector, Data.IBall> upperLayerHandler)
             {
                 StartCalled = true;
                 NumberOfBallseCreated = numberOfBalls;
-                upperLayerHandler(new DataVectorFixture(), new DataBallFixture());
+                upperLayerHandler(new DataVectorFixture(), new DataBallFixture(1));
             }
 
             private record DataVectorFixture : Data.IVector
@@ -129,21 +123,42 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
 
             private class DataBallFixture : Data.IBall
             {
-                public IVector Velocity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+                private IVector _velocity = new DataVectorFixture { x = 1.0, y = 1.0 };
+                private IVector _position = new DataVectorFixture { x = 50.0, y = 50.0 };
+
+                public DataBallFixture(int id) { Id = id; }
+                public int Id { get; }
+
+                public IVector Velocity
+                {
+                    get => _velocity;
+                    set => _velocity = value;
+                }
+
                 public double Diameter => 25.0;
 
-                public double Mass => throw new NotImplementedException();
+                public double Mass => 1.0;  
 
                 public event EventHandler<IVector>? NewPositionNotification = null;
 
                 public IVector GetPosition()
                 {
-                    throw new NotImplementedException();
+                    return _position;  
                 }
 
                 public void Move(IVector delta)
                 {
-                    throw new NotImplementedException();
+                    _position = new DataVectorFixture
+                    {
+                        x = _position.x + delta.x,
+                        y = _position.y + delta.y
+                    };
+                }
+
+                private record DataVectorFixture : IVector
+                {
+                    public double x { get; init; }
+                    public double y { get; init; }
                 }
             }
 
