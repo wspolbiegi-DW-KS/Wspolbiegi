@@ -22,8 +22,6 @@
 
         public abstract IVector CreateVector (double x, double y);
 
-        //public abstract void MoveAll();
-
         #endregion public API
 
         #region IDisposable
