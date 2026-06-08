@@ -9,14 +9,7 @@ namespace TP.ConcurrentProgramming.Data
         public DataImplementation()
         {
         }
-        public override void MoveAll()
-        {
-            lock (BallsLock)
-            {
-                foreach (Ball item in BallsList)
-                    item.Move(item.Velocity);
-            }
-        }
+      
 
         #endregion ctor
 

@@ -22,7 +22,7 @@
 
         public abstract IVector CreateVector (double x, double y);
 
-        public abstract void MoveAll();
+        //public abstract void MoveAll();
 
         #endregion public API
 

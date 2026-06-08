@@ -27,6 +27,8 @@ namespace TP.ConcurrentProgramming.Data
 
         private Vector Position;
         private readonly object _lock = new object();
+        private DateTime _lastUpdateTime = DateTime.Now;
+
         internal const double BallDiameter = 25.0;  
 
         public double Diameter => BallDiameter;
@@ -41,9 +43,17 @@ namespace TP.ConcurrentProgramming.Data
 
         public void Move(IVector delta)
         {
+            DateTime currentTime = DateTime.Now;
+            double deltaTime = (currentTime - _lastUpdateTime).TotalMilliseconds / 1000.0; // Convert to seconds
+            _lastUpdateTime = currentTime;
+
             lock (_lock)
             {
-                Position = new Vector(Position.x + delta.x, Position.y + delta.y);
+                //Position = new Vector(Position.x + delta.x, Position.y + delta.y);
+                Position = new Vector(
+                    Position.x + delta.x * deltaTime * 100,
+                    Position.y + delta.y * deltaTime * 100
+                );
             }
             RaiseNewPositionChangeNotification();
         }

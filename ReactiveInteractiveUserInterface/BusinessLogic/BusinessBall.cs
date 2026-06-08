@@ -18,8 +18,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private volatile bool _running = false;
 
         private Logger _logger;
-        private object databall;
-        private object Id;
 
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
@@ -57,7 +55,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     }
                     foreach (var other in snapshot)
                     {
-                        if (!ReferenceEquals(this, other))
+                        //if (!ReferenceEquals(this, other))
+                        //    ResolveCollisionWith(other);
+                        if (!ReferenceEquals(this, other) && ball.Id < other.ball.Id)
                             ResolveCollisionWith(other);
                     }
                     
@@ -92,17 +92,23 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
             //odbijanie od ścian
             if (nextX > BoardWidth - Diameter || nextX < 0)
+            {
                 vX = -vX;
                 isColliding = true;
+            }
             if (nextY > BoardHeight - Diameter || nextY < 0)
+            {
                 vY = -vY;
                 isColliding = true;
-
+            } 
             ball.Velocity = dataLayer.CreateVector(vX, vY);
             ball.Move(ball.Velocity);
 
             NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
-            _logger.Log($"Bounce - {ball.Id} position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), new velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
+            if (isColliding == true)
+            {
+                _logger.Log($"Bounce - {ball.Id} position ({Math.Round(ball.GetPosition().x, 4)}, {Math.Round(ball.GetPosition().y, 4)}), new velocity ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)})");
+            }
         }
 
         internal void ResolveCollisionWith(Ball other)
@@ -138,9 +144,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         other.ball.Velocity.x + p * Mass * nx,
                         other.ball.Velocity.y + p * Mass * ny);
                 }
-            }
-            _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball1 ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)}), ball2 ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
+                _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball1 ({Math.Round(ball.Velocity.x, 4)}, {Math.Round(ball.Velocity.y, 4)}), ball2 ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
 
+            }
         }
         #endregion private
     }
