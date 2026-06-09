@@ -78,7 +78,7 @@ namespace TP.ConcurrentProgramming.DataTest
             string[] allLines = File.ReadAllLines(logFilePath);
 
             Assert.IsTrue(
-                allLines.Any(line => line.Contains(message)),
+                allLines.Any(line => line.Contains("message before dispose")),
                 "Dispose() powinien zapisać do pliku wpisy które jeszcze czekały w kolejce");
         }
     }
