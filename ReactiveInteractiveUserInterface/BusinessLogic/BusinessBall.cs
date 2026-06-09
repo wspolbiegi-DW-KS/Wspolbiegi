@@ -154,9 +154,11 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     other.ball.Velocity = dataLayer.CreateVector(
                         other.ball.Velocity.x + p * Mass * nx,
                         other.ball.Velocity.y + p * Mass * ny);
-                }
-                _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
+
+                    _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
                     $"{Math.Round(ball.Velocity.y, 4)}), ball {other.ball.Id} ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
+                }
+                
 
             }
         }
