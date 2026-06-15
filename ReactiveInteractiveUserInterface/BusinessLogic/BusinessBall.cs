@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.Numerics;
-using System.Text;
-using System.Timers;
-using TP.ConcurrentProgramming.Data;
+﻿using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -14,9 +10,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly Data.IBall ball;
         private List<Ball> _allBalls;
         private object _collisionLock;
-
-        private System.Timers.Timer _timer;
-        private const double TimerIntervalMs = 16.0; // ~60 fps
 
         private Thread _thread;
         private volatile bool _running = false;
