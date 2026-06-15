@@ -19,8 +19,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         private Logger _logger;
 
-        private DateTime _lastUpdateTime = DateTime.UtcNow;
-
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
         internal Ball(Data.IBall ball, Data.DataAbstractAPI dataLayer, Logger logger)
@@ -47,11 +45,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             while (_running)
             {
-                DateTime now = DateTime.UtcNow;
-                double dt = (now - _lastUpdateTime).TotalSeconds;
-                _lastUpdateTime = now;
-                if (dt > 0.1) dt = 0.1;
-
                 if (_allBalls != null)
                 {
                     List<Ball> snapshot;
@@ -66,7 +59,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     }
                     
                 }
-                Step(dt);
+                Step();
                 Thread.Sleep(16);
             }
         }
@@ -85,16 +78,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         #region private
 
-        internal void Step(double dt)
+        internal void Step()
         {
             Data.IVector pos = ball.GetPosition();
             double vX = ball.Velocity.x;
             double vY = ball.Velocity.y;
-            dt *= 50; //skalujemy dt, aby ruch był bardziej widoczny
 
-            //uwzględnienie upływu czasu przy obliczeniach położenia
-            double nextX = pos.x + vX * dt;
-            double nextY = pos.y + vY * dt;
+            double nextX = pos.x + vX;
+            double nextY = pos.y + vY;
             Boolean isColliding = false;
 
             //odbijanie od ścian
@@ -109,11 +100,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 isColliding = true;
             }
             ball.Velocity = dataLayer.CreateVector(vX, vY);
-            ball.Move(
-                dataLayer.CreateVector(
-                vX*dt,
-                vY*dt )
-            );
+            ball.Move(ball.Velocity);
 
             NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
             if (isColliding == true)
