@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
 using System.Text;
+using System.Timers;
 using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
@@ -13,6 +14,9 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private readonly Data.IBall ball;
         private List<Ball> _allBalls;
         private object _collisionLock;
+
+        private System.Timers.Timer _timer;
+        private const double TimerIntervalMs = 16.0; // ~60 fps
 
         private Thread _thread;
         private volatile bool _running = false;
@@ -57,7 +61,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         if (!ReferenceEquals(this, other) && ball.Id < other.ball.Id)
                             ResolveCollisionWith(other);
                     }
-                    
                 }
                 Step();
                 Thread.Sleep(16);
@@ -144,9 +147,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
                     _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
                     $"{Math.Round(ball.Velocity.y, 4)}), ball {other.ball.Id} ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
-                }
-                
-
+                }              
             }
         }
         #endregion private
