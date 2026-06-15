@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using System.Numerics;
-using System.Text;
-using TP.ConcurrentProgramming.Data;
+﻿using TP.ConcurrentProgramming.Data;
 
 namespace TP.ConcurrentProgramming.BusinessLogic
 {
@@ -18,8 +15,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         private volatile bool _running = false;
 
         private Logger _logger;
-
-        private DateTime _lastUpdateTime = DateTime.UtcNow;
 
         public double Diameter => ball.Diameter;
         public double Mass => ball.Mass;
@@ -47,11 +42,6 @@ namespace TP.ConcurrentProgramming.BusinessLogic
         {
             while (_running)
             {
-                DateTime now = DateTime.UtcNow;
-                double dt = (now - _lastUpdateTime).TotalSeconds;
-                _lastUpdateTime = now;
-                if (dt > 0.1) dt = 0.1;
-
                 if (_allBalls != null)
                 {
                     List<Ball> snapshot;
@@ -64,9 +54,8 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                         if (!ReferenceEquals(this, other) && ball.Id < other.ball.Id)
                             ResolveCollisionWith(other);
                     }
-                    
                 }
-                Step(dt);
+                Step();
                 Thread.Sleep(16);
             }
         }
@@ -85,16 +74,14 @@ namespace TP.ConcurrentProgramming.BusinessLogic
 
         #region private
 
-        internal void Step(double dt)
+        internal void Step()
         {
             Data.IVector pos = ball.GetPosition();
             double vX = ball.Velocity.x;
             double vY = ball.Velocity.y;
-            dt *= 50; //skalujemy dt, aby ruch był bardziej widoczny
 
-            //uwzględnienie upływu czasu przy obliczeniach położenia
-            double nextX = pos.x + vX * dt;
-            double nextY = pos.y + vY * dt;
+            double nextX = pos.x + vX;
+            double nextY = pos.y + vY;
             Boolean isColliding = false;
 
             //odbijanie od ścian
@@ -109,11 +96,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                 isColliding = true;
             }
             ball.Velocity = dataLayer.CreateVector(vX, vY);
-            ball.Move(
-                dataLayer.CreateVector(
-                vX*dt,
-                vY*dt )
-            );
+            ball.Move(ball.Velocity);
 
             NewPositionNotification?.Invoke(this, new Position(ball.GetPosition().x, ball.GetPosition().y));
             if (isColliding == true)
@@ -154,10 +137,10 @@ namespace TP.ConcurrentProgramming.BusinessLogic
                     other.ball.Velocity = dataLayer.CreateVector(
                         other.ball.Velocity.x + p * Mass * nx,
                         other.ball.Velocity.y + p * Mass * ny);
-                }
-                _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
-                    $"{Math.Round(ball.Velocity.y, 4)}), ball {other.ball.Id} ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
 
+                    _logger.Log($"Collision - ball {ball.Id}, ball {other.ball.Id}. New velocities: ball {ball.Id} ({Math.Round(ball.Velocity.x, 4)}, " +
+                    $"{Math.Round(ball.Velocity.y, 4)}), ball {other.ball.Id} ({Math.Round(other.ball.Velocity.x, 4)}, {Math.Round(other.ball.Velocity.y, 4)})");
+                }              
             }
         }
         #endregion private

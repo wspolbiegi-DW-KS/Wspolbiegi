@@ -13,7 +13,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             Ball newInstance = new(dataBallFixture, new DataLayerFixture(), logger);
             int numberOfCallBackCalled = 0;
             newInstance.NewPositionNotification += (sender, position) => { Assert.IsNotNull(sender); Assert.IsNotNull(position); numberOfCallBackCalled++; };
-            newInstance.Step(0.1);
+            newInstance.Step();
             Assert.AreEqual<int>(1, numberOfCallBackCalled);
         }
 
@@ -26,7 +26,7 @@ namespace TP.ConcurrentProgramming.BusinessLogic.Test
             Logger logger = new Logger();
             Ball newInstance = new(dataBallFixture, new DataLayerFixture(), logger);
 
-            newInstance.Step(0.1);
+            newInstance.Step();
 
             Assert.IsTrue(dataBallFixture.Velocity.x < 0, "Po odbiciu od prawej ściany vX powinno być ujemne");
         }
